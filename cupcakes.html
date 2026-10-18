@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toronto Cupcakes Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,500;1,500&family=Manrope:wght@400;600&display=swap">
+<style>
+/* Layout: long-form case study on the portfolio's dark field; 12-col editorial grid, sticky Double Diamond, scroll-sorted cards, pinned purchase-flow reel beside a fixed receipt */
+:root {
+  --bg: #08090c;
+  --surface: #101218;
+  --fg: #e8eaf0;
+  --muted: #7d8394;
+  --line: rgba(200, 208, 230, 0.12);
+  --cup: #f4b6c2;
+  --crimson: #d6394f;
+  --honey: #e8b05a;
+  --latte: #e9d8c4;
+  --espresso: #2b1a14;
+  --display: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --gut: clamp(16px, 4vw, 56px);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: clip; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.65; font-weight: 300; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+[hidden] { display: none !important; }
+::selection { background: var(--cup); color: var(--bg); }
+:focus-visible { outline: 1px solid var(--cup); outline-offset: 4px; border-radius: 2px; }
+.wrap { padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+.grain { position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite; }
+@keyframes grain { 0%{transform:translate(0,0)} 33%{transform:translate(-3%,2%)} 66%{transform:translate(2%,-3%)} 100%{transform:translate(0,0)} }
+.progress { position: fixed; top: 0; left: 0; height: 1px; width: 100%; background: var(--cup); transform-origin: left; transform: scaleX(0); z-index: 60; }
+
+/* nav */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: calc(env(safe-area-inset-top, 0px) + 18px); padding-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; mix-blend-mode: difference; color: #fff; }
+.nav .back, .nav .proto { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; display: inline-flex; gap: 10px; align-items: center; }
+.nav .back span { transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.nav .back:hover span { transform: translateX(-5px); }
+.nav .mark { font-family: var(--display); font-size: 22px; }
+.nav .mark i { font-style: italic; }
+
+/* hero */
+.hero { position: relative; min-height: min(100svh, 980px); display: grid; align-content: end; overflow: hidden; padding-block: 120px clamp(32px, 6vh, 64px); }
+.swirl { position: absolute; right: -10vw; top: 4vh; width: min(64vw, 740px); aspect-ratio: 1; border-radius: 50%; will-change: transform;
+  background: repeating-conic-gradient(from 0deg, var(--cup) 0 14deg, #e88ea2 14deg 28deg, var(--crimson) 28deg 36deg, #f7cfd7 36deg 52deg);
+  -webkit-mask: radial-gradient(circle, #000 0 62%, transparent 63%); mask: radial-gradient(circle, #000 0 62%, transparent 63%);
+  filter: saturate(.9); opacity: .85; animation: rot 60s linear infinite; }
+.swirl::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 38% 32%, rgba(255,255,255,.5), transparent 40%); }
+@keyframes rot { to { transform: rotate(360deg); } }
+.sprinkles { position: absolute; inset: 0; pointer-events: none; }
+.sprinkle { position: absolute; width: 22px; height: 6px; border-radius: 99px; will-change: transform; }
+.hero .veil { position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 18%, rgba(8,9,12,.6) 58%, rgba(8,9,12,.2)), linear-gradient(0deg, var(--bg), transparent 40%); }
+.hero-inner { position: relative; display: grid; gap: 26px; }
+.hero h1 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(72px, 14vw, 230px); line-height: .82; letter-spacing: -0.04em; }
+.hero h1 em { font-style: italic; color: var(--cup); }
+.hero .tagline { margin: 0; font-family: var(--display); font-style: italic; font-size: clamp(26px, 3.4vw, 48px); line-height: 1.1; color: var(--cup); max-width: 22ch; }
+.hero .sub { margin: 0; color: var(--muted); max-width: 48ch; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; gap: 24px; border-top: 1px solid var(--line); padding-top: 22px; align-items: start; }
+.facts div { display: grid; gap: 6px; min-width: 0; }
+.facts b { font-weight: 400; font-size: 15px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--bg); background: var(--cup); border-radius: 99px; padding: 12px 18px; transition: background .3s; white-space: nowrap; }
+.btn:hover { background: #fff; }
+
+/* sections */
+section { position: relative; }
+.sec { padding-block: clamp(90px, 14vh, 160px); }
+.grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(24px, 5vw, 80px); }
+.sec-head { display: grid; gap: 14px; align-content: start; }
+.sec-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 5vw, 76px); line-height: .95; letter-spacing: -0.03em; text-wrap: balance; }
+.sec-head h2 em { color: var(--cup); }
+.prose { display: grid; gap: 22px; max-width: 64ch; min-width: 0; }
+.prose p { margin: 0; color: #c3c7d2; }
+.prose p.lead { font-family: var(--display); font-size: clamp(26px, 2.6vw, 36px); line-height: 1.25; color: var(--fg); letter-spacing: -0.01em; }
+.prose p.lead .wd { opacity: .25; transition: opacity .2s linear; }
+.reveal { transform: translateY(var(--ry, 0px)); opacity: var(--ro, 1); }
+
+/* before problems */
+.before { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 32px); margin-top: 56px; }
+.prob { border: 1px solid var(--line); border-radius: 6px; padding: 28px; display: grid; gap: 10px; align-content: start; background: linear-gradient(160deg, rgba(214,57,79,.07), transparent 60%); }
+.prob b { font-family: var(--display); font-weight: 400; font-size: clamp(48px, 5vw, 76px); line-height: .95; color: var(--fg); font-variant-numeric: tabular-nums; }
+.prob b s { color: var(--crimson); text-decoration-thickness: 2px; }
+.prob p { margin: 0; color: #c3c7d2; font-size: 15px; }
+
+/* screen slots */
+.shot { margin: 0; display: grid; gap: 12px; }
+.shot .frame { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background:
+  repeating-linear-gradient(0deg, transparent 0 31px, rgba(200,208,230,.04) 31px 32px),
+  repeating-linear-gradient(90deg, transparent 0 31px, rgba(200,208,230,.04) 31px 32px),
+  radial-gradient(circle at 70% 20%, rgba(244,182,194,.10), transparent 60%), var(--surface);
+  display: grid; place-items: center; }
+.shot .frame.tall { aspect-ratio: 4 / 5; }
+.shot .frame:has(img) { aspect-ratio: 4 / 3; }
+.shot .frame img { width: 100%; height: 100%; object-fit: cover; }
+.shot .ph { display: grid; gap: 8px; justify-items: center; text-align: center; padding: 16px; }
+.shot .ph .plus { width: 44px; height: 44px; border-radius: 50%; border: 1px dashed rgba(244,182,194,.5); display: grid; place-items: center; color: var(--cup); font-size: 20px; }
+.shot figcaption { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.shot-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(16px, 2.6vw, 32px); align-items: start; }
+.shot-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 32px); align-items: start; }
+.parallax { will-change: transform; }
+
+
+/* live homepage "gif" */
+.browser { margin: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #15171d; box-shadow: 0 40px 120px rgba(0,0,0,.55), 0 0 0 1px rgba(244,182,194,.06); }
+.chrome { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.chrome .dots { display: flex; gap: 6px; }
+.chrome .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(200,208,230,.18); }
+.chrome .dots i:first-child { background: var(--crimson); }
+.chrome .addr { flex: 1; min-width: 0; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--muted); background: rgba(255,255,255,.04); border-radius: 99px; padding: 5px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.playbtn { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px; cursor: pointer; }
+.playbtn:hover { border-color: var(--cup); }
+.viewport { position: relative; aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; background: #fff; }
+.viewport img { width: 100%; height: auto; will-change: transform; }
+.caption { display: block; margin-top: 14px; }
+.shot .frame.pan img { object-fit: cover; object-position: 50% 0; transition: object-position 9s cubic-bezier(.45,0,.2,1); }
+.shot .frame.pan:hover img { object-position: 50% 100%; }
+.shot .frame img { background: #fff; }
+
+
+/* step-by-step + black boards */
+.hero h1.h1-head { font-size: clamp(48px, 7.4vw, 124px); line-height: .92; max-width: 15ch; }
+.brand-word { font-size: clamp(52px, 6.4vw, 100px) !important; }
+.lead-plain { font-family: var(--display); font-size: clamp(24px, 2.4vw, 34px) !important; line-height: 1.3; color: var(--fg) !important; }
+.dd-intro { margin: 0; color: #c3c7d2; max-width: 44ch; font-size: 16px; }
+a.playbtn { text-decoration: none; display: inline-flex; align-items: center; }
+.pgw { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); margin-top: 48px; }
+.pgw-card { border: 1px solid var(--line); border-radius: 10px; padding: 24px; display: grid; gap: 10px; align-content: start; background: linear-gradient(160deg, rgba(244,182,194,.07), transparent 60%); }
+.pgw-card .label { color: var(--cup); }
+.pgw-card p { margin: 0; color: #c3c7d2; font-size: 15px; }
+.proc { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.proc li { display: inline-flex; gap: 8px; align-items: center; padding: 10px 14px; border-radius: 8px; background: rgba(244,182,194,.12); color: var(--fg); font-size: 13px; }
+.proc li b { font-family: var(--mono); font-weight: 400; color: var(--cup); font-size: 11px; }
+.proc li.soft { background: rgba(255,255,255,.06); }
+.proc li.dark { background: #000; border: 1px solid rgba(255,255,255,.12); }
+.ca { margin-top: 48px; background: #000; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: clamp(20px, 3.6vw, 52px); display: grid; gap: 28px; min-width: 0; }
+.ca-head { display: flex; flex-wrap: wrap; gap: 16px 24px; justify-content: space-between; align-items: center; }
+.ca-title { border-left: 6px solid var(--crimson); padding-left: 22px; display: grid; gap: 6px; }
+.ca-title h3 { margin: 0; font-family: var(--body); font-weight: 700; font-size: clamp(26px, 3.2vw, 44px); text-transform: uppercase; line-height: 1; color: #fff; }
+.ca-title p { margin: 0; color: #9aa0ad; font-size: clamp(14px, 1.3vw, 18px); }
+.ca-pill { font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #000; background: var(--cup); border-radius: 99px; padding: 11px 20px; }
+.ca-kicker { font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--cup); }
+.ca-insights { background: #0e0f13; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: clamp(18px, 2.6vw, 30px); display: grid; gap: 12px; }
+.ca-insights h4 { margin: 0 0 8px; font-weight: 700; font-size: clamp(20px, 2vw, 26px); color: #fff; }
+.ca-ops { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.ca-ops.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.ca-ops.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.ca-op { display: flex; gap: 14px; align-items: start; min-width: 0; }
+.ca-op > b { flex: none; width: 44px; height: 44px; border-radius: 10px; background: var(--cup); color: #000; display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+.ca-op h5 { margin: 0 0 4px; font-weight: 700; font-size: 15px; color: #fff; }
+.ca-op p { margin: 0; font-size: 13.5px; color: #9aa0ad; }
+.ca-foot { margin: 0; color: #9aa0ad; font-size: 14px; }
+.rs-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.rs-stats div { background: #0e0f13; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 22px; display: grid; gap: 6px; }
+.rs-stats b { font-family: var(--display); font-weight: 400; font-size: clamp(56px, 7vw, 104px); line-height: .9; color: var(--cup); font-variant-numeric: tabular-nums; }
+.rs-stats span { color: #c3c7d2; font-size: 14px; }
+/* persona */
+.persona { background: #000; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: clamp(18px, 3vw, 40px); display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(18px, 3vw, 40px); }
+.p-left { background: #2a1418; border-radius: 16px; padding: 26px; display: grid; gap: 10px; align-content: start; }
+.p-avatar { width: 84px; height: 84px; border-radius: 50%; background: var(--crimson); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 36px; }
+.p-left h3 { margin: 10px 0 0; font-weight: 700; font-size: clamp(30px, 2.8vw, 40px); color: #fff; line-height: 1; }
+.p-role { color: #f2c9cf; }
+.p-left hr { border: 0; border-top: 1px solid rgba(255,255,255,.15); width: 100%; margin: 8px 0; }
+.p-k { font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--honey); }
+.p-left b { font-weight: 700; font-size: 17px; color: #fff; }
+.p-left p { margin: 6px 0 0; color: #e3d6d8; font-size: 14px; line-height: 1.65; }
+.p-right { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.p-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.p-card { background: #120e10; border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 22px; display: grid; gap: 10px; align-content: start; }
+.p-card ul { margin: 0; padding-left: 18px; color: #fff; font-size: 15px; display: grid; gap: 6px; }
+.p-k2 { font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--cup); }
+.p-dc { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 22px; display: grid; gap: 8px; }
+.p-scn { margin: 0; font-family: var(--display); font-size: clamp(18px, 1.6vw, 22px); line-height: 1.45; color: #fff; }
+.needs { display: flex; flex-wrap: wrap; gap: 10px; }
+.needs span { background: #fbe3ea; color: #2b1a14; border-radius: 4px; padding: 10px 12px; font-size: 13px; box-shadow: 0 6px 16px rgba(0,0,0,.4); }
+/* card sort board */
+.cs-scroll { overflow-x: auto; }
+.cs-board { display: grid; grid-template-columns: repeat(11, minmax(104px, 1fr)); gap: 10px; min-width: 1180px; align-items: start; }
+.cs-col { display: grid; gap: 8px; }
+.cs-col h5 { margin: 0; background: var(--crimson); color: #fff; border-radius: 6px; padding: 10px 6px; text-align: center; font-weight: 700; font-size: 12.5px; }
+.cs-col .scard { padding: 9px 10px; border-radius: 6px; background: #fff; color: #2b1a14; font-family: "Manrope", var(--body); font-weight: 600; font-size: 12px; line-height: 1.3; box-shadow: 0 6px 14px rgba(0,0,0,.45); will-change: transform; }
+.cs-notes { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.note { border-radius: 4px; padding: 14px; font-size: 13px; line-height: 1.4; color: #2b1a14; box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 14px 26px rgba(0,0,0,.35); }
+.note.y { background: #fff29a; }
+.note:nth-child(odd) { transform: rotate(-1deg); } .note:nth-child(even) { transform: rotate(.8deg); }
+/* site map */
+.sm-home { display: grid; justify-items: center; }
+.sm-home span { background: #fff; color: #000; font-weight: 700; padding: 12px 40px; border-radius: 8px; position: relative; }
+.sm-home span::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: 22px; background: rgba(255,255,255,.4); }
+.sm-scroll { overflow-x: auto; margin-top: -6px; }
+.sm-tree { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 12px; min-width: 900px; border-top: 1px solid rgba(255,255,255,.4); padding-top: 20px; align-items: start; }
+.sm-col { display: grid; gap: 6px; position: relative; }
+.sm-col::before { content: ""; position: absolute; left: 50%; top: -21px; width: 1px; height: 20px; background: rgba(255,255,255,.4); }
+.sm-col h5 { margin: 0 0 4px; background: var(--crimson); color: #fff; border-radius: 6px; padding: 10px 6px; text-align: center; font-weight: 700; font-size: 13px; }
+.sm-col.foot h5 { background: #5a4a40; }
+.sm-col span { background: rgba(244,182,194,.16); color: #fbe3ea; border-radius: 4px; padding: 7px 10px; font-size: 12.5px; }
+.sm-col.foot span { background: rgba(255,255,255,.07); color: #d6d0cc; }
+.sm-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; background: #fff; color: #1a1310; border-radius: 8px; padding: 16px 22px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.sm-nav b { font-family: "Playfair Display", Georgia, serif; font-size: 18px; letter-spacing: 0; text-transform: none; margin-right: auto; }
+.sm-nav i { font-style: normal; margin-left: auto; }
+/* happy path */
+.hp { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 8px; counter-reset: h; }
+.hp li { counter-increment: h; position: relative; background: #fff; color: #1a1310; border-radius: 8px; padding: 14px 16px; font-size: 13.5px; font-weight: 600; display: flex; gap: 8px; align-items: center; }
+.hp li::before { content: counter(h, decimal-leading-zero); font-family: var(--mono); font-size: 10px; color: var(--crimson); }
+.hp li:not(:last-child)::after { content: "→"; position: absolute; right: -10px; color: var(--cup); font-weight: 700; }
+.hp li.ends { background: var(--crimson); color: #fff; border-radius: 99px; }
+.hp li.ends::before { color: #fbe3ea; }
+.ca .diagram { background: #0c0d12; }
+/* sketches */
+.sketches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); }
+.sketches figure { margin: 0; }
+.sketches img { width: 100%; aspect-ratio: 177 / 132; object-fit: cover; border-radius: 6px; box-shadow: 0 20px 50px rgba(0,0,0,.45); transform: rotate(var(--rot, 0deg)); transition: transform .5s; }
+.sketches figure:nth-child(odd) img { --rot: -1.2deg; } .sketches figure:nth-child(even) img { --rot: 1deg; }
+.sketches figure:hover img { --rot: 0deg; transform: scale(1.04); }
+.shot .frame.wide:has(img) { aspect-ratio: 637 / 315; }
+.changed ul { margin: 0; padding-left: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px; color: #fff; font-size: 15px; }
+.changed { margin-top: 32px; }
+.pf-label { color: var(--crimson) !important; }
+.gaps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); }
+.gap { border: 1px solid var(--line); border-radius: 10px; padding: 24px; display: grid; gap: 10px; align-content: start; }
+.gap h3 { margin: 0; font-weight: 700; font-size: 17px; color: var(--cup); }
+.gap p { margin: 0; color: #c3c7d2; font-size: 14.5px; }
+@media (max-width: 960px) {
+  .pgw, .gaps { grid-template-columns: 1fr; }
+  .ca-ops, .ca-ops.four, .ca-ops.five { grid-template-columns: 1fr 1fr; }
+  .persona { grid-template-columns: 1fr; }
+  .sketches { grid-template-columns: 1fr 1fr; }
+  .changed ul { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) { .ca-ops, .ca-ops.four, .ca-ops.five, .rs-stats, .p-cards { grid-template-columns: 1fr; } }
+
+
+/* before/after boards: calm list, no motion */
+.wf { max-width: 520px; margin: 0 0 56px; }
+.boards { display: grid; gap: clamp(40px, 6vh, 72px); }
+.board { margin: 0; display: grid; gap: 14px; justify-items: center; }
+.board figcaption { width: 100%; max-width: 1200px; display: flex; flex-wrap: wrap; gap: 6px 24px; align-items: baseline; justify-content: space-between; }
+.board figcaption p { margin: 0; color: #c3c7d2; font-size: 15px; max-width: 70ch; }
+.board img { width: 100%; max-width: 1200px; height: auto; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #f8f3f0; }
+.fix-title { margin: 72px 0 20px; font-family: var(--display); font-weight: 400; font-size: clamp(28px, 3vw, 42px); line-height: 1; }
+
+/* double diamond */
+.dd { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); }
+.dd-sticky { position: sticky; top: 0; align-self: start; height: 100svh; display: grid; align-content: center; gap: 24px; }
+.dd-sticky svg { width: 100%; height: auto; overflow: visible; }
+.dd-sticky .d { fill: rgba(244,182,194,.03); stroke: rgba(200,208,230,.22); stroke-width: 1; transition: fill .5s, stroke .5s; }
+.dd-sticky .d.on { fill: rgba(244,182,194,.16); stroke: var(--cup); }
+.dd-sticky text { font-family: var(--mono); font-size: 11px; letter-spacing: 1.4px; fill: var(--muted); transition: fill .5s; }
+.dd-sticky text.on { fill: var(--fg); }
+.dd-steps { display: grid; padding-block: 30vh; gap: 30vh; }
+.phase { display: grid; gap: 14px; opacity: .3; transition: opacity .5s; }
+.phase.on { opacity: 1; }
+.phase h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 4.6vw, 68px); line-height: 1; }
+.phase p { margin: 0; color: #c3c7d2; max-width: 48ch; }
+
+/* research */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); margin-top: 56px; }
+.stat { padding: 26px 24px 8px 0; display: grid; gap: 6px; }
+.stat + .stat { padding-left: 24px; border-left: 1px solid var(--line); }
+.stat b { font-family: var(--display); font-weight: 400; font-size: clamp(64px, 8vw, 120px); line-height: .9; color: var(--cup); font-variant-numeric: tabular-nums; }
+.persona { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(16px, 2.6vw, 32px); margin-top: 64px; }
+.pcard { border: 1px solid var(--line); border-radius: 6px; padding: clamp(24px, 3vw, 40px); display: grid; gap: 18px; align-content: start; background: linear-gradient(160deg, rgba(244,182,194,.07), transparent 60%); }
+.avatar { width: 72px; height: 72px; border-radius: 50%; background: conic-gradient(from 200deg, var(--cup), var(--crimson), var(--honey), var(--cup)); display: grid; place-items: center; font-family: var(--display); font-size: 34px; color: var(--bg); }
+.pcard h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(34px, 3.4vw, 48px); line-height: 1; }
+.pcard p { margin: 0; color: #c3c7d2; font-size: 15px; }
+.scenario { border: 1px solid var(--line); border-radius: 6px; padding: clamp(24px, 3vw, 40px); display: grid; gap: 18px; align-content: start; }
+.scenario p.q { margin: 0; font-family: var(--display); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.3; }
+.order { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 6px 11px; border: 1px solid var(--line); border-radius: 99px; color: var(--fg); white-space: nowrap; }
+.chip.gf { border-color: var(--honey); color: var(--honey); }
+
+/* card sort */
+.sort { margin-top: 72px; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(24px, 5vw, 80px); align-items: center; }
+.sort-board { position: relative; border: 1px dashed var(--line); border-radius: 8px; padding: clamp(24px, 3vw, 40px); display: flex; flex-wrap: wrap; gap: 12px; min-height: 260px; align-content: center; }
+.scard { padding: 12px 16px; border-radius: 6px; background: var(--latte); color: var(--espresso); font-family: "Manrope", var(--body); font-weight: 600; font-size: 14px; box-shadow: 0 10px 24px rgba(0,0,0,.35); will-change: transform; }
+.merge { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); }
+.merge .chip { color: var(--muted); }
+.merge .chip.to { color: var(--bg); background: var(--cup); border-color: var(--cup); }
+
+/* design areas */
+.areas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.area { padding: 24px 20px 24px 0; display: grid; gap: 14px; align-content: start; }
+.area + .area { padding-left: 20px; border-left: 1px solid var(--line); }
+.area .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cup); box-shadow: 0 0 14px var(--cup); }
+.area h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.05; }
+.area p { margin: 0; color: var(--muted); font-size: 14px; }
+
+/* diagrams */
+.diagram { border: 1px solid var(--line); border-radius: 6px; background: repeating-linear-gradient(0deg, transparent 0 23px, rgba(200,208,230,.04) 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, rgba(200,208,230,.04) 23px 24px), #0c0d12; overflow-x: auto; }
+.diagram svg { display: block; min-width: 720px; width: 100%; height: auto; }
+.diagram .flow-path { stroke-dasharray: 6 6; animation: dash 3s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -48; } }
+.steps { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--line); counter-reset: s; }
+.steps li { counter-increment: s; padding: 18px 16px 18px 0; display: grid; gap: 6px; font-size: 15px; border-bottom: 1px solid var(--line); }
+.steps li::before { content: counter(s, decimal-leading-zero); font-family: var(--mono); font-size: 11px; color: var(--cup); }
+.steps li.end { color: var(--cup); }
+
+/* first prototype problems */
+.issues { display: grid; border-top: 1px solid var(--line); }
+.issue { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); gap: 24px; padding-block: 22px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.issue h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(26px, 2.6vw, 36px); line-height: 1; }
+.issue p { margin: 0; color: #c3c7d2; font-size: 15px; }
+.issue code { font-family: var(--mono); font-size: 13px; color: var(--crimson); }
+
+/* design system */
+.ds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 32px); margin-top: 56px; }
+.tile { border: 1px solid var(--line); border-radius: 6px; padding: clamp(22px, 3vw, 36px); display: grid; gap: 18px; align-content: start; min-width: 0; }
+.swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.sw { display: grid; gap: 8px; }
+.sw i { display: block; aspect-ratio: 1; border-radius: 6px; border: 1px solid var(--line); }
+.specimen { display: grid; gap: 8px; }
+.specimen .pf { font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: clamp(36px, 4vw, 56px); line-height: 1; color: var(--latte); }
+.specimen .pf i { color: var(--cup); }
+.specimen .mr { font-family: "Manrope", var(--body); font-size: 16px; color: #c3c7d2; }
+.spacing { display: flex; align-items: end; gap: 10px; height: 90px; }
+.spacing i { display: block; width: 18px; background: var(--cup); border-radius: 2px; opacity: .8; transform-origin: bottom; transform: scaleY(var(--g, 1)); }
+.comps { display: flex; flex-wrap: wrap; gap: 8px; }
+.tile p { margin: 0; color: #c3c7d2; font-size: 15px; }
+
+/* purchase flow reel */
+.flow { position: relative; }
+.flow-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-columns: minmax(260px, 3fr) minmax(0, 9fr); align-items: center; }
+.receipt { position: relative; z-index: 2; margin-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding: 28px; border-radius: 6px; background: var(--latte); color: var(--espresso); font-family: "Manrope", var(--body); display: grid; gap: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.receipt h3 { margin: 0; font-family: "Playfair Display", Georgia, serif; font-weight: 500; font-size: 26px; }
+.receipt .row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.receipt .row.total { border-top: 1px dashed rgba(43,26,20,.35); padding-top: 12px; font-weight: 600; font-size: 18px; }
+.receipt .note { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(43,26,20,.6); }
+.receipt .step-now { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--crimson); }
+.flow-track-wrap { overflow: hidden; min-width: 0; }
+.flow-track { display: flex; gap: clamp(16px, 2.4vw, 32px); padding-left: clamp(24px, 4vw, 56px); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); width: max-content; will-change: transform; }
+.fstep { width: clamp(260px, 30vw, 440px); flex: none; display: grid; gap: 12px; }
+.fstep h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 30px; line-height: 1; }
+.fstep p { margin: 0; color: #c3c7d2; font-size: 14px; max-width: 36ch; }
+.fstep .label b { color: var(--cup); font-weight: 400; }
+
+/* validate */
+.plan { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); margin-top: 48px; }
+.metric { border: 1px solid var(--line); border-radius: 6px; padding: 22px; display: grid; gap: 8px; align-content: start; }
+.metric b { font-family: var(--display); font-weight: 400; font-size: 30px; line-height: 1; }
+.metric p { margin: 0; color: var(--muted); font-size: 14px; }
+.pending { margin-top: 24px; border: 1px dashed rgba(244,182,194,.4); border-radius: 6px; padding: 22px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; }
+.pending span:last-child { color: var(--muted); font-size: 15px; }
+
+/* after thoughts */
+.next-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 32px); }
+.ns { border: 1px solid var(--line); border-radius: 6px; padding: 28px; display: grid; gap: 12px; align-content: start; }
+.ns h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 30px; line-height: 1.05; }
+.ns p { margin: 0; color: #c3c7d2; font-size: 15px; }
+
+/* footer */
+.end { padding-block: clamp(100px, 16vh, 180px) 32px; display: grid; gap: 48px; }
+.end-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.end-card { display: grid; gap: 14px; padding: 28px; border: 1px solid var(--line); border-radius: 6px; min-height: 220px; align-content: space-between; transition: border-color .4s, background .4s; }
+a.end-card:hover { border-color: var(--cup); background: rgba(244,182,194,.05); }
+.end-card h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(36px, 4.6vw, 72px); line-height: .95; letter-spacing: -0.02em; }
+.end-card h3 em { color: var(--muted); }
+.foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+.cursor { position: fixed; left: 0; top: 0; width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1px solid #fff; border-radius: 50%; pointer-events: none; z-index: 100; mix-blend-mode: difference; transition: width .35s cubic-bezier(.2,.8,.2,1), height .35s, margin .35s, background .35s; display: none; }
+.cursor.big { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: #fff; }
+@media (pointer: fine) { .cursor { display: block; } }
+
+@media (max-width: 960px) {
+  .grid, .dd, .persona, .sort { grid-template-columns: 1fr; }
+  .dd-sticky { position: relative; height: auto; }
+  .dd-steps { padding-block: 24px; gap: 56px; }
+  .phase { opacity: 1; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .area:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .area:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plan { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ds, .next-steps { grid-template-columns: 1fr; }
+  .flow-pin { grid-template-columns: 1fr; align-content: center; gap: 20px; }
+  .receipt { margin-right: max(var(--gut), env(safe-area-inset-right, 0px)); padding: 18px; gap: 6px; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  .receipt h3, .receipt .step-now, .receipt .note { grid-column: 1 / -1; }
+  .receipt h3 { font-size: 20px; }
+  .flow-track { padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); }
+  .fstep { width: 70vw; }
+}
+@media (max-width: 640px) {
+  .nav .mark { display: none; }
+  .before, .stats, .shot-row, .shot-3, .end-row { grid-template-columns: 1fr; }
+  .stat, .stat + .stat { padding: 20px 0; border-left: 0; }
+  .stat + .stat { border-top: 1px solid var(--line); }
+  .issue { grid-template-columns: 1fr; gap: 8px; }
+  .areas, .steps, .plan { grid-template-columns: 1fr; }
+  .area, .area + .area { padding: 20px 0; border-left: 0; }
+  .area + .area { border-top: 1px solid var(--line); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain, .swirl, .diagram .flow-path { animation: none; }
+  .flow { height: auto !important; }
+  .flow-pin { position: relative; height: auto; padding-block: 40px; }
+  .flow-track-wrap { overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<script>
+/* always open a case study at the top, not where the last page was scrolled */
+try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+(function () {
+  var top = function () { if (!location.hash) window.scrollTo(0, 0); };
+  top();
+  addEventListener('DOMContentLoaded', top);
+  addEventListener('load', function () { top(); setTimeout(top, 60); });
+  addEventListener('pageshow', top);
+})();
+</script>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<nav class="nav wrap" aria-label="Case study">
+  <a class="back" href="index.html#work"><span>←</span> All work</a>
+  <a class="mark" href="index.html">Behina <i>Amini</i></a>
+  <a class="proto" href="https://www.figma.com/design/qACfff52zwnXZJ2F0HjY9v/cupcake-project" target="_blank" rel="noopener">Prototype ↗</a>
+</nav>
+
+<main>
+  <header class="hero wrap">
+    <div class="swirl" id="swirl" aria-hidden="true"></div>
+    <div class="sprinkles" id="sprinkles" aria-hidden="true"></div>
+    <div class="veil" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <span class="label">Case study 02 · Bakery website redesign</span>
+      <h1 class="h1-head">Ordering cupcakes for an event, <em>made quick and confident</em></h1>
+      <p class="tagline">Fresh cupcakes, ordered in minutes.</p>
+      <div class="facts">
+        <div><span class="label">Role</span><b>UX and UI designer</b></div>
+        <div><span class="label">Timeline</span><b>2 months, with a team</b></div>
+        <div><span class="label">Project</span><b>Redesign</b></div>
+        <div><span class="label">Tools</span><b>Figma and FigJam</b></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec wrap" aria-labelledby="ov" style="padding-bottom:56px">
+    <div class="grid">
+      <div class="sec-head"><span class="label">01 · The project</span><h2 id="ov" class="brand-word">Toronto <em>Cupcakes</em></h2></div>
+      <div class="prose">
+        <p class="lead" id="lead">Small-batch cupcakes for every celebration in Toronto and the GTA.</p>
+        <p>Toronto Cupcakes is a local bakery selling handmade cupcakes, celebration cakes and gift boxes online, with delivery across Toronto and the GTA. Customers order for birthdays, office celebrations, weddings and holidays, often for a specific day and time. The business earns its revenue from direct online orders, custom orders and corporate gifting.</p>
+        <p><a class="btn" href="https://www.figma.com/proto/qACfff52zwnXZJ2F0HjY9v/cupcake-project?node-id=468-718&amp;starting-point-node-id=468%3A718" target="_blank" rel="noopener" data-hover>View prototype ↗</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Toronto Cupcakes homepage prototype">
+    <figure class="browser reveal" id="live">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">Toronto Cupcakes · Homepage prototype</span><a class="playbtn" href="https://www.figma.com/proto/qACfff52zwnXZJ2F0HjY9v/cupcake-project?node-id=468-718&amp;starting-point-node-id=468%3A718" target="_blank" rel="noopener" data-hover>Open in Figma ↗</a><button class="playbtn" id="playbtn" type="button" aria-pressed="true" data-hover>Pause</button></div>
+      <div class="viewport" id="liveview"><img id="liveimg" src="img/cupcakes-home.jpg" alt="The full redesigned Toronto Cupcakes homepage, scrolling from the hero to the footer"></div>
+    </figure>
+    <p class="caption label">The redesigned homepage prototype, scrolling top to bottom</p>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="rd">
+    <div class="grid">
+      <div class="sec-head"><span class="label">02 · Role</span><h2>My <em>part</em></h2></div>
+      <div class="prose"><p class="lead-plain">I worked on this project for two months as the UX and UI designer, collaborating with my team throughout. I contributed to the research, card sorting and information architecture, and designed the final UI, design system and clickable prototype in Figma and FigJam.</p></div>
+    </div>
+    <div class="pgw">
+      <div class="pgw-card reveal"><span class="label">The problem</span><p>The original site was hard to scan: inconsistent spacing, unclear categories, a confusing cart, and a checkout with errors in the totals.</p></div>
+      <div class="pgw-card reveal"><span class="label">The goal</span><p>Help busy Torontonians like Shirin find the right cupcakes, pick a delivery time and pay — in a few clear steps.</p></div>
+      <div class="pgw-card reveal"><span class="label">What I did</span><p>Card sorting · Site map · Persona &amp; scenario · User &amp; task flows · Sketches · Wireframes · Design system · Final UI · Clickable prototype</p></div>
+    </div>
+    <div class="grid" style="margin-top:80px">
+      <div class="sec-head"><span class="label">The redesign</span><h2 id="rd">What was <em>broken</em></h2></div>
+      <div class="prose"><p>Toronto Cupcakes already had a website, and our task was to redesign it. The existing site was hard to scan: spacing and fonts were inconsistent (ten font families on one page), categories were unclear, and the checkout showed a total that did not match the cart. The redesign had to cover browsing cupcakes, custom orders, corporate gifting and occasions, plus a clear cart and checkout with a chosen delivery day and time.</p></div>
+    </div>
+    <div class="before">
+      <div class="prob reveal"><span class="label">Typography</span><b>10</b><p>font families on one page, with inconsistent spacing that made it hard to scan.</p></div>
+      <div class="prob reveal"><span class="label">Checkout</span><b><s>$6.78</s> $9.04</b><p>The checkout button showed one amount while the total showed another.</p></div>
+      <div class="prob reveal"><span class="label">Navigation</span><b>?</b><p>Categories were unclear, so people couldn't tell where to find what they needed.</p></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="pr" style="padding-top:0">
+    <div class="sec-head" style="margin-bottom:28px"><span class="label">03 · Process</span><h2>Eleven steps, <em>research to next steps</em></h2></div>
+    <ol class="proc"><li class=""><b>01</b>Research</li><li class=""><b>02</b>Card sorting</li><li class=""><b>03</b>Site map</li><li class=""><b>04</b>User flow</li><li class=""><b>05</b>Task flow</li><li class="soft"><b>06</b>Sketches</li><li class="soft"><b>07</b>Wireframes</li><li class="soft"><b>08</b>Design system</li><li class="dark"><b>09</b>Final UI</li><li class="dark"><b>10</b>Purchase flow</li><li class="dark"><b>11</b>Next steps</li></ol>
+    <div class="dd" style="margin-top:40px">
+      <div class="dd-sticky">
+        <div class="sec-head"><span class="label">Double Diamond</span><h2 id="pr">Double <em>Diamond</em></h2><p class="dd-intro">I used the Double Diamond framework to move from understanding how people group bakery content to delivering a focused ordering experience.</p></div>
+        <svg viewBox="0 0 520 220" aria-hidden="true">
+          <polygon class="d" data-i="0" points="10,110 135,20 135,200"/>
+          <polygon class="d" data-i="1" points="135,20 260,110 135,200"/>
+          <polygon class="d" data-i="2" points="260,110 385,20 385,200"/>
+          <polygon class="d" data-i="3" points="385,20 510,110 385,200"/>
+          <text data-i="0" x="72" y="215" text-anchor="middle">DISCOVER</text>
+          <text data-i="1" x="198" y="215" text-anchor="middle">DEFINE</text>
+          <text data-i="2" x="322" y="215" text-anchor="middle">DEVELOP</text>
+          <text data-i="3" x="448" y="215" text-anchor="middle">DELIVER</text>
+        </svg>
+      </div>
+      <div class="dd-steps">
+        <div class="phase" data-i="0"><span class="label">Phase 1</span><h3>Discover</h3><p>I surveyed 50 people and interviewed 15 who order cupcakes for events to learn how they shop. I used what they told me to build an open card sort, and to write a persona and scenario around a time-sensitive event order.</p></div>
+        <div class="phase" data-i="1"><span class="label">Phase 2</span><h3>Define</h3><p>I turned the card-sort groups and participants' naming notes into a site map, and chose five top-level navigation items: Menu, Cupcakes, Custom Cupcakes, Corporate and Occasions.</p></div>
+        <div class="phase" data-i="2"><span class="label">Phase 3</span><h3>Develop</h3><p>I mapped Shirin's user flow and a detailed task flow, sketched on paper, then built low-fidelity wireframes and a first round of pink mockups.</p></div>
+        <div class="phase" data-i="3"><span class="label">Phase 4</span><h3>Deliver</h3><p>I built a token-based design system, redesigned every page in a Bakery Classic style, and linked a six-screen purchase flow into a clickable prototype.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="rs" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">04 · Research</span><h2 id="rs">Research</h2></div>
+      <div class="prose"><p>Instead of a competitive analysis, I started with the people who order: I ran interviews and a survey, then turned what they told me into an open card sort to learn how they expect a bakery site to be organized.</p></div>
+    </div>
+    <div class="ca reveal">
+      <div class="ca-head">
+        <div class="ca-title"><h3>Interviews &amp; survey</h3><p>People who order cupcakes for events</p></div>
+        <span class="ca-pill">Discover / Research</span>
+      </div>
+      <div class="rs-stats">
+        <div><b>50</b><span>People surveyed</span></div>
+        <div><b>15</b><span>People interviewed</span></div>
+        <div><b>11</b><span>Card-sort groups</span></div>
+      </div>
+      <div class="ca-insights">
+        <span class="ca-kicker">What I asked about</span>
+        <div class="ca-ops four">
+          <div class="ca-op"><b>01</b><div><h5>Ordering for events</h5><p>How they order cupcakes for birthdays, offices and family gatherings.</p></div></div>
+          <div class="ca-op"><b>02</b><div><h5>Choosing flavours</h5><p>How they pick flavours for a group.</p></div></div>
+          <div class="ca-op"><b>03</b><div><h5>Dietary needs</h5><p>Which needs they plan around, like gluten-free, vegan or nut-free.</p></div></div>
+          <div class="ca-op"><b>04</b><div><h5>Checkout frustrations</h5><p>What goes wrong when they pay and choose delivery.</p></div></div>
+        </div>
+        <p class="ca-foot">Their answers shaped the persona, the scenario and the content cards for the card sort.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="pe" style="padding-top:0">
+    <div class="sec-head" style="margin-bottom:40px"><span class="label">05 · Persona &amp; scenario</span><h2 id="pe">Who we are designing for, <em>and the job she needs done</em></h2></div>
+    <div class="persona reveal">
+      <div class="p-left">
+        <div class="p-avatar" aria-hidden="true">S</div>
+        <h3>Shirin</h3>
+        <span class="p-role">32 · Toronto · Personal banker</span>
+        <hr>
+        <span class="p-k">Tech level</span>
+        <b>Comfortable shopping on mobile &amp; desktop</b>
+        <p>Shirin lives and works in Toronto. With a busy, structured schedule she often orders cupcakes online for birthdays, office celebrations and family gatherings. She prefers quick, reliable online shopping and values clarity and efficiency — especially when ordering for time-sensitive events.</p>
+      </div>
+      <div class="p-right">
+        <div class="p-cards">
+          <div class="p-card"><span class="p-k2">Goals</span><ul><li>Order for an event in minutes</li><li>Choose an exact delivery day &amp; time</li><li>Cater to guests' dietary needs</li></ul></div>
+          <div class="p-card"><span class="p-k2">Frustrations</span><ul><li>Unclear categories &amp; prices</li><li>Surprise costs at checkout</li><li>Not knowing if the order is on time</li></ul></div>
+        </div>
+        <div class="p-dc">
+          <span class="p-k2">Scenario</span>
+          <p class="p-scn">Shirin is having guests tomorrow. While setting the time with them, she asks whether they'd like cupcakes from the Toronto Cupcakes website. The guests love the idea — each mentions a favourite flavour or a dietary need. Shirin visits the website. From Cupcakes she orders two chocolate, one gluten-free lemon and one vanilla cupcake. She picks tomorrow for delivery and pays. After the confirmation message, she checks her order once more to make sure everything is right and to see its status. Then she logs out.</p>
+          <span class="p-k2" style="margin-top:14px">Needs pulled from the scenario</span>
+          <div class="needs"><span>Mixed flavours in one order</span><span>Dietary filter: gluten-free</span><span>Next-day delivery slot</span><span>Clear total before paying</span><span>Order status after paying</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="cs" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">06 · Card sorting</span><h2 id="cs">Open <em>card sort</em></h2></div>
+      <div class="prose"><p>Using the content and wording from the interviews and survey, I ran an open card sort. Participants grouped the site's content into their own categories. Cleaned-up results (typos fixed, duplicates merged) — then the insights that shaped the navigation.</p></div>
+    </div>
+    <div class="ca reveal">
+      <div class="ca-head">
+        <div class="ca-title"><h3>Open card sort</h3><p>11 groups created by participants · scroll to watch them settle</p></div>
+        <span class="ca-pill">Define</span>
+      </div>
+      <div class="cs-scroll"><div class="cs-board" id="sortboard"><div class="cs-col"><h5>Cupcakes</h5><span class="scard">Red velvet</span><span class="scard">Vanilla</span><span class="scard">Chocolate</span><span class="scard">Customizable</span><span class="scard">4 pack sizes, different prices</span></div><div class="cs-col"><h5>Flavours</h5><span class="scard">Various flavours</span><span class="scard">Red velvet</span><span class="scard">Vanilla</span><span class="scard">Chocolate</span><span class="scard">Customizable</span></div><div class="cs-col"><h5>Dietary restrictions</h5><span class="scard">Gluten-free</span><span class="scard">Vegan</span><span class="scard">Nut-free</span></div><div class="cs-col"><h5>Price</h5><span class="scard">Filter by price</span><span class="scard">4 pack sizes, different prices</span></div><div class="cs-col"><h5>Filter / sort</h5><span class="scard">Most popular</span><span class="scard">Best sellers</span><span class="scard">Filter by price</span><span class="scard">Filter: gluten-free</span><span class="scard">Price per pack</span><span class="scard">Pick your pack size</span><span class="scard">Easy to order</span></div><div class="cs-col"><h5>Cart</h5><span class="scard">Vanilla</span><span class="scard">Chocolate</span><span class="scard">Red velvet</span><span class="scard">Honey Russian</span><span class="scard">Placing an order</span><span class="scard">Cart / basket</span></div><div class="cs-col"><h5>Occasions</h5><span class="scard">Birthdays</span><span class="scard">Weddings</span><span class="scard">Celebrations</span></div><div class="cs-col"><h5>Corporate</h5><span class="scard">Branded events</span><span class="scard">Logo cupcakes</span></div><div class="cs-col"><h5>Help &amp; info</h5><span class="scard">FAQ</span><span class="scard">Community</span><span class="scard">Resources</span><span class="scard">Useful information</span></div><div class="cs-col"><h5>Contact</h5><span class="scard">Contact us</span></div><div class="cs-col"><h5>About</h5><span class="scard">About us</span></div></div></div>
+      <span class="ca-kicker">Participants' naming notes</span>
+      <div class="cs-notes"><div class="note y"><span>Community + FAQ + Resources + Help feel the same — keep only “Help &amp; info”</span></div><div class="note y"><span>“Corporate” = branded events &amp; logo cupcakes</span></div><div class="note y"><span>“Occasions” = birthdays, weddings, celebrations</span></div><div class="note y"><span>Cupcakes: holiday &amp; seasonal specials</span></div><div class="note y"><span>Cupcakes: special event / limited edition</span></div><div class="note y"><span>Delivery = shipping &amp; service area</span></div><div class="note y"><span>Ordering = how to order, cart &amp; checkout</span></div><div class="note y"><span>Home / Welcome</span></div></div>
+      <div class="ca-insights">
+        <span class="ca-kicker">Key insights</span>
+        <h4>What the card sort told me</h4>
+        <div class="ca-ops five"><div class="ca-op"><b>01</b><div><h5>Merge help content</h5><p>Community, FAQ, Resources and Help overlap → one “Help &amp; Info” area.</p></div></div><div class="ca-op"><b>02</b><div><h5>Two ways to browse</h5><p>People group by flavour and by dietary need → listing needs flavour and diet filters.</p></div></div><div class="ca-op"><b>03</b><div><h5>Packs &amp; price matter</h5><p>Pack size and price per pack came up repeatedly → show pack options on the product page.</p></div></div><div class="ca-op"><b>04</b><div><h5>Distinct destinations</h5><p>Corporate and Occasions were always separate groups → top-level nav items.</p></div></div><div class="ca-op"><b>05</b><div><h5>Seasonal is its own thing</h5><p>Holiday / limited-edition cupcakes need their own grouping.</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="ia" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">07 · Information architecture</span><h2 id="ia">Site map <em>&amp; navigation</em></h2></div>
+      <div class="prose"><p>Card-sort groups became the site map. The final navigation keeps five top-level items; delivery, help, about and policies moved to the footer, so the header stays short.</p></div>
+    </div>
+    <div class="ca reveal">
+      <div class="sm-home"><span>Home</span></div>
+      <div class="sm-scroll"><div class="sm-tree"><div class="sm-col"><h5>Menu</h5><span>Price list</span><span>Cakes</span><span>Boxes &amp; gifts</span><span>Extras</span></div><div class="sm-col"><h5>Cupcakes</h5><span>All cupcakes</span><span>Classics</span><span>Best sellers</span><span>Vegan</span><span>Gluten-free</span><span>Seasonal / limited</span><span>Subscription</span></div><div class="sm-col"><h5>Custom Cupcakes</h5><span>Choose flavour</span><span>Choose frosting</span><span>Toppings</span><span>Submit request</span></div><div class="sm-col"><h5>Corporate</h5><span>Branded events</span><span>Logo cupcakes</span><span>Event displays</span><span>Get a quote</span></div><div class="sm-col"><h5>Occasions</h5><span>Birthdays</span><span>Weddings</span><span>Engagements</span><span>Anniversaries</span><span>Baby showers</span><span>Graduations</span><span>Holidays</span><span>Theme &amp; wrap parties</span></div><div class="sm-col util"><h5>Order</h5><span>Cart</span><span>Delivery date &amp; time</span><span>Payment</span><span>Confirmation</span><span>Order status</span></div><div class="sm-col foot"><h5>Footer</h5><span>Delivery areas</span><span>Help &amp; FAQ</span><span>About us</span><span>Privacy policy</span><span>Cupcake policy</span><span>Contact</span></div></div></div>
+      <span class="ca-kicker">Final navigation (as designed)</span>
+      <div class="sm-nav"><b>Toronto Cupcakes</b><span>Menu</span><span>Cupcakes</span><span>Custom Cupcakes</span><span>Corporate</span><span>Occasions</span><i>⌕ ◯</i></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="uf" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">08 · User flow</span><h2 id="uf">Shirin's <em>happy path</em></h2></div>
+      <div class="prose"><p>The scenario as a linear flow — from landing on the site to checking her order status.</p></div>
+    </div>
+    <div class="ca reveal"><ol class="hp"><li class="ends">Start</li><li class="">Home page</li><li class="">Navigate to Cupcakes</li><li class="">Cupcake listing</li><li class="">Select 2 chocolate, 1 vanilla, 1 GF lemon</li><li class="">Add to cart</li><li class="">Cart</li><li class="">Checkout</li><li class="">Delivery date</li><li class="">Payment</li><li class="">Order confirmation</li><li class="">My order (status)</li><li class="ends">Exit / log out</li></ol></div>
+    <div class="grid" style="margin-top:80px">
+      <div class="sec-head"><span class="label">09 · Task flow</span><h2>Ordering a <em>mixed box</em></h2></div>
+      <div class="prose"><p>Every click and decision Shirin makes. Diamonds are decisions — YES continues adding, NO moves on to checkout.</p></div>
+    </div>
+    <div class="ca reveal">
+      <div class="diagram">
+      <svg viewBox="0 0 760 390" role="img" aria-label="Task flow: Shirin loops through flavours, then checks out as a guest or signed in">
+        <defs><marker id="tf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="rgba(200,208,230,.5)"/></marker></defs>
+        <g fill="none" stroke="rgba(200,208,230,.4)" stroke-width="1.25">
+          <path d="M130 110H170" marker-end="url(#tf)"/><path d="M290 110H328" marker-end="url(#tf)"/><path d="M452 110H485" marker-end="url(#tf)"/><path d="M585 110H606" marker-end="url(#tf)"/>
+          <path d="M670 70V54H390V86" marker-end="url(#tf)" stroke="rgba(244,182,194,.7)"/><path d="M670 150V196" marker-end="url(#tf)"/><path d="M615 220H555" marker-end="url(#tf)"/><path d="M405 220H380" marker-end="url(#tf)"/><path d="M220 220H195" marker-end="url(#tf)"/>
+          <path d="M110 244V316" marker-end="url(#tf)"/><path d="M300 260V292H150V316" marker-end="url(#tf)"/><path d="M175 340H235" marker-end="url(#tf)"/><path d="M345 340H390" marker-end="url(#tf)"/><path d="M530 340H560" marker-end="url(#tf)"/>
+        </g>
+        <g fill="#14161d" stroke="rgba(200,208,230,.3)" stroke-width="1.25">
+          <rect x="30" y="86" width="100" height="48" rx="8"/><rect x="170" y="86" width="120" height="48" rx="8"/><rect x="328" y="86" width="124" height="48" rx="8"/><rect x="485" y="86" width="100" height="48" rx="8"/>
+          <polygon points="606,110 670,70 734,110 670,150"/>
+          <rect x="615" y="196" width="110" height="48" rx="8"/><rect x="405" y="196" width="150" height="48" rx="8"/>
+          <polygon points="220,220 300,180 380,220 300,260"/>
+          <rect x="25" y="196" width="170" height="48" rx="8"/><rect x="45" y="316" width="130" height="48" rx="8"/><rect x="235" y="316" width="110" height="48" rx="8"/><rect x="390" y="316" width="140" height="48" rx="8"/>
+          <rect x="560" y="316" width="160" height="48" rx="8" fill="rgba(244,182,194,.14)" stroke="#f4b6c2" stroke-width="2"/>
+        </g>
+        <g font-family="Geist, sans-serif" font-size="13" fill="#e8eaf0" text-anchor="middle">
+          <text x="80" y="114">Home page</text><text x="230" y="114">All cupcakes</text><text x="390" y="114">Choose flavour</text><text x="535" y="114">Tap + to add</text><text x="670" y="114">Add another?</text>
+          <text x="670" y="224">View cart</text><text x="480" y="224">Pick delivery date</text><text x="300" y="224">Guest or sign in?</text><text x="110" y="224">Add address and email</text>
+          <text x="110" y="344">Review order</text><text x="290" y="344">Pay now</text><text x="460" y="344">Order success</text><text x="640" y="344" font-weight="500">Check order status</text>
+        </g>
+        <g font-family="Geist Mono, monospace" font-size="11" fill="#7d8394"><text x="682" y="66">yes</text><text x="682" y="180">no</text><text x="208" y="208" text-anchor="middle">guest</text><text x="310" y="284">sign in</text></g>
+      </svg>
+      </div>
+      <p class="ca-foot">Loops: each “Want more?” → YES returns to Choose a flavour; “Add another?” → NO goes to Checkout. “Guest or sign in?” → Guest continues; Sign in skips the address and email steps.</p>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="sk" style="padding-top:0">
+    <div class="grid" style="margin-bottom:40px">
+      <div class="sec-head"><span class="label">10 · Sketches</span><h2 id="sk">Paper <em>sketches</em></h2></div>
+      <div class="prose"><p>Quick explorations of the homepage, listing, product and checkout before moving to Figma.</p></div>
+    </div>
+    <div class="sketches">
+      <figure class="reveal"><img src="img/cupcakes-sketch-1.jpg" alt="Paper sketch of the homepage" loading="lazy"></figure>
+      <figure class="reveal"><img src="img/cupcakes-sketch-2.jpg" alt="Paper sketch of the cupcake listing" loading="lazy"></figure>
+      <figure class="reveal"><img src="img/cupcakes-sketch-3.jpg" alt="Paper sketch of the product page" loading="lazy"></figure>
+      <figure class="reveal"><img src="img/cupcakes-sketch-4.jpg" alt="Paper sketch of the checkout" loading="lazy"></figure>
+    </div>
+    <div class="grid" style="margin-top:96px;margin-bottom:40px">
+      <div class="sec-head"><span class="label">11 · Wireframe &amp; redesign</span><h2>From wireframe <em>to redesign</em></h2></div>
+      <div class="prose"><p>After the sketches I built a low-fidelity wireframe of the homepage, then redesigned every page. Each board puts the original torontocupcake.com page beside the redesign, with notes on what changed and why.</p></div>
+    </div>
+    <figure class="shot reveal wf"><div class="frame"><img src="img/cupcakes-wireframe.jpg" alt="Low-fidelity homepage wireframe" loading="lazy"></div><figcaption><span class="label">Homepage wireframe</span></figcaption></figure>
+    <div class="boards">
+      <figure class="board">
+        <figcaption><span class="label">01 · Cupcakes page · full page</span><p>One header instead of seven logos and a hamburger, filter chips, large photography with one Add button, “Build a box”, and a dark footer.</p></figcaption>
+        <img src="img/cupcakes-ba-1.webp" alt="Toronto Cupcakes Cupcakes page · full page: before (torontocupcake.com) and after (redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board">
+        <figcaption><span class="label">02 · Header and intro</span><p>A delivery promise strip and one header with five sections, search, account and cart; a breadcrumb, a title and one sentence that explains the offer.</p></figcaption>
+        <img src="img/cupcakes-ba-2.webp" alt="Toronto Cupcakes Header and intro: before (torontocupcake.com) and after (redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board">
+        <figcaption><span class="label">03 · Product grid</span><p>24 tiny cut-out photos with QTY fields became eight flavours with large photos, a one-line description, the price and a single Add button.</p></figcaption>
+        <img src="img/cupcakes-ba-3.webp" alt="Toronto Cupcakes Product grid: before (torontocupcake.com) and after (redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board">
+        <figcaption><span class="label">04 · Dozen → Build a box</span><p>“One Dozen One Click” at the top became “Can’t decide? Build a box” after the flavours, with two clear price points.</p></figcaption>
+        <img src="img/cupcakes-ba-4.webp" alt="Toronto Cupcakes Dozen → Build a box: before (torontocupcake.com) and after (redesign) with annotations" loading="lazy">
+      </figure>
+    </div>
+    <h3 class="fix-title">Five things I fixed from the first prototype</h3>
+    <div class="issues">
+      <div class="issue reveal"><h3>Crowded header</h3><p>The logo, a large title, the nav bar and the icons sat on three separate rows, pushing the products below the fold.</p></div>
+      <div class="issue reveal"><h3>Inconsistent spacing</h3><p>Cards and columns were placed by hand, so edges drifted a few pixels from screen to screen.</p></div>
+      <div class="issue reveal"><h3>Too many fonts</h3><p>Ten font families and thirteen sizes, and the decorative heading font was hard to read at small sizes.</p></div>
+      <div class="issue reveal"><h3>Checkout errors</h3><p>The checkout button showed <code>$6.78</code> while the total was <code>$9.04</code>, and the two-item cart and checkout disagreed.</p></div>
+      <div class="issue reveal"><h3>Copy issues</h3><p>Labels like <code>YOUR CARD</code> and <code>VIEW CARD</code> meant cart, and <code>CUSTOME CUPCAKES</code> was misspelled.</p></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="ds" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">12 · Design system</span><h2 id="ds">Tokens, <em>not guesses</em></h2></div>
+      <div class="prose"><p>To fix the inconsistencies from the first prototype, I built the design on Figma variables instead of hand-picked values. Because every screen uses these tokens, changing the brand direction later updates the whole site at once.</p></div>
+    </div>
+    <div class="ds">
+      <div class="tile reveal">
+        <span class="label">Colour primitives → semantic tokens</span>
+        <div class="swatches">
+          <div class="sw"><i style="background:var(--espresso)"></i><span class="label">Espresso</span></div>
+          <div class="sw"><i style="background:var(--crimson)"></i><span class="label">Crimson</span></div>
+          <div class="sw"><i style="background:var(--latte)"></i><span class="label">Latte</span></div>
+          <div class="sw"><i style="background:var(--cup)"></i><span class="label">Pink</span></div>
+          <div class="sw"><i style="background:var(--honey)"></i><span class="label">Honey</span></div>
+        </div>
+        <p>Primitives feed semantic tokens such as background, action, text and border, plus a see-through scrim so photos stay visible under dark bands.</p>
+      </div>
+      <div class="tile reveal">
+        <span class="label">Type · 2 fonts instead of 10 · 11 styles</span>
+        <div class="specimen"><span class="pf">Red Velvet <i>Classic</i></span><span class="mr">Manrope for body text, buttons and labels. Playfair Display for headings.</span></div>
+      </div>
+      <div class="tile reveal">
+        <span class="label">Spacing · 4-point scale</span>
+        <div class="spacing" id="spacing" aria-hidden="true">
+          <i style="height:4px"></i><i style="height:8px"></i><i style="height:12px"></i><i style="height:16px"></i><i style="height:24px"></i><i style="height:32px"></i><i style="height:48px"></i><i style="height:64px"></i><i style="height:80px"></i>
+        </div>
+        <p>80px page margins, a 24px gutter and a small radius scale for a classic bakery feel.</p>
+      </div>
+      <div class="tile reveal">
+        <span class="label">12 shared components</span>
+        <div class="comps"><span class="chip">Site Header</span><span class="chip">Site Footer</span><span class="chip">Button</span><span class="chip">Chip</span><span class="chip">Quantity Stepper</span><span class="chip">Product Card</span><span class="chip">Menu Item</span><span class="chip">Cart Line Item</span><span class="chip">Text Field</span><span class="chip">Option Tile</span><span class="chip">Checkout Steps</span><span class="chip">Checkout Header</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="fd" style="padding-top:0">
+    <div class="grid" style="margin-bottom:48px">
+      <div class="sec-head"><span class="label">13 · Final UI</span><h2 id="fd">Bakery <em>Classic</em></h2></div>
+      <div class="prose"><p>I explored seven visual directions and chose Bakery Classic: a long-scroll homepage in espresso and crimson with a soft pink accent. Every page shares the same header, footer and tokens, and each nav item has its own page.</p></div>
+    </div>
+    <div class="shot-3">
+      <figure class="shot"><div class="frame parallax pan" data-speed=".05"><img src="img/cupcakes-home.jpg" alt="Redesigned homepage, full length" loading="lazy"></div><figcaption><span class="label">Homepage</span></figcaption><p style="margin:0;color:var(--muted);font-size:14px">Photo hero, how we bake, our cupcakes, how ordering works, offers, price list, journal, reviews and the store.</p></figure>
+      <figure class="shot"><div class="frame parallax" data-speed="-.06"><img src="img/cupcakes-menu.jpg" alt="Menu page with category tabs" loading="lazy"></div><figcaption><span class="label">Menu</span></figcaption><p style="margin:0;color:var(--muted);font-size:14px">Every item has a photo, grouped into Cupcakes, Cakes, Boxes and gifts, and Extras.</p></figure>
+      <figure class="shot"><div class="frame parallax" data-speed=".07"><img src="img/cupcakes-cupcakes.jpg" alt="Cupcakes listing with filter chips" loading="lazy"></div><figcaption><span class="label">Cupcakes</span></figcaption><p style="margin:0;color:var(--muted);font-size:14px">Filter chips for categories and dietary needs, and product cards whose price and Add button always line up.</p></figure>
+    </div>
+    <div class="ca reveal changed"><span class="ca-kicker">What changed from v1</span><ul><li>One aligned header: logo, nav and actions in a single row</li><li>80px page margins and a 4-pt spacing scale</li><li>Two fonts instead of ten</li><li>Product cards with price and action always aligned</li><li>Picture menu grouped by Cupcakes, Cakes, Boxes &amp; gifts, Extras</li><li>Dark photo bands use a scrim token so images stay visible</li><li>Frames for every nav item: Menu, Cupcakes, Custom Cupcakes, Corporate, Occasions</li></ul></div>
+  </section>
+
+  <section class="flow" id="flow" aria-label="Purchase flow">
+    <div class="flow-pin">
+      <aside class="receipt" aria-label="Order totals">
+        <span class="label pf-label">14 · Purchase flow</span>
+        <span class="step-now" id="stepnow">Step 1 of 6 · Product</span>
+        <h3>Same totals, every step</h3>
+        <div class="row"><span>Subtotal</span><span>$47.00</span></div>
+        <div class="row"><span>Delivery</span><span>Free</span></div>
+        <div class="row"><span>HST</span><span>$6.11</span></div>
+        <div class="row total"><span>Total</span><span>$53.11</span></div>
+        <span class="note">Clickable prototype · six linked screens</span>
+      </aside>
+      <div class="flow-track-wrap">
+        <div class="flow-track" id="ftrack">
+          <div class="fstep"><div class="shot"><div class="frame"><img src="img/cupcakes-flow1-product.jpg" alt="Red Velvet product page with pack sizes and extras" loading="lazy"></div></div><span class="label"><b>01</b> Product</span><h3>Choose your pack</h3><p>Pick a pack size, quantity and extras, then Add to cart.</p></div>
+          <div class="fstep"><div class="shot"><div class="frame"><img src="img/cupcakes-flow2-added.jpg" alt="Cart drawer confirming the item and subtotal" loading="lazy"></div></div><span class="label"><b>02</b> Added to cart</span><h3>Instant confirmation</h3><p>A drawer confirms the item and shows the subtotal.</p></div>
+          <div class="fstep"><div class="shot"><div class="frame"><img src="img/cupcakes-flow3-cart.jpg" alt="Cart page with order summary and promo code" loading="lazy"></div></div><span class="label"><b>03</b> Cart</span><h3>Review the order</h3><p>Edit quantities, apply a promo code and review the order summary.</p></div>
+          <div class="fstep"><div class="shot"><div class="frame"><img src="img/cupcakes-flow4-delivery.jpg" alt="Checkout delivery details" loading="lazy"></div></div><span class="label"><b>04</b> Checkout, delivery</span><h3>Pick a time slot</h3><p>Contact details, delivery or pickup, address, and a date and time slot.</p></div>
+          <div class="fstep"><div class="shot"><div class="frame"><img src="img/cupcakes-flow5-payment.jpg" alt="Checkout payment step" loading="lazy"></div></div><span class="label"><b>05</b> Checkout, payment</span><h3>Pay your way</h3><p>Card, Apple Pay, Google Pay or PayPal, plus a gift card message.</p></div>
+          <div class="fstep"><div class="shot"><div class="frame"><img src="img/cupcakes-flow6-confirmed.jpg" alt="Order confirmation with status tracker" loading="lazy"></div></div><span class="label"><b>06</b> Order confirmed</span><h3>Track it</h3><p>The order number, a status tracker and the delivery details.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="va">
+    <div class="grid">
+      <div class="sec-head"><span class="label">15 · Validate · Planned</span><h2 id="va">The test <em>I'll run</em></h2></div>
+      <div class="prose"><p>A usability test with five people who order baked goods for events, using Shirin's scenario as the task: order 2 chocolate, 1 vanilla and 1 gluten-free lemon cupcake for delivery tomorrow, then check the order status. I'll iterate on the checkout first, where the first prototype had the most problems.</p></div>
+    </div>
+    <div class="plan">
+      <div class="metric reveal"><span class="label">Measure</span><b>Task success</b><p>Did they complete the order?</p></div>
+      <div class="metric reveal"><span class="label">Measure</span><b>Time on task</b><p>How long each step takes.</p></div>
+      <div class="metric reveal"><span class="label">Measure</span><b>Errors</b><p>Wrong turns and mistakes.</p></div>
+      <div class="metric reveal"><span class="label">Measure</span><b>Ease, 1–7</b><p>Rated after each step.</p></div>
+    </div>
+    <div class="pending"><span class="label">Results</span><span>Test results will go here once the usability test is done.</span></div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="nx" style="padding-top:0">
+    <div class="grid" style="margin-bottom:40px">
+      <div class="sec-head"><span class="label">16 · Next steps</span><h2 id="nx">Gaps found <em>&amp; what's next</em></h2></div>
+      <div class="prose"><p>Comparing the research with the final screens surfaced a few gaps worth fixing before testing.</p></div>
+    </div>
+    <div class="gaps"><div class="gap reveal"><h3>Scenario products missing</h3><p>Shirin orders vanilla and gluten-free lemon — neither exists on the menu yet. Add them, with dietary tags.</p></div><div class="gap reveal"><h3>Mixed box</h3><p>She wants several flavours in one order. Add a “Build a mixed box” option on the product page.</p></div><div class="gap reveal"><h3>Guest checkout</h3><p>The task flow has a Guest vs Sign-in decision that the prototype skips. Add it before Delivery.</p></div><div class="gap reveal"><h3>My orders &amp; log out</h3><p>The flow ends with checking order status and logging out. Add a My Orders page in the account area.</p></div><div class="gap reveal"><h3>Delivery areas page</h3><p>Card sort grouped Delivery with service areas (Toronto, Ajax, Aurora, Brampton…). Add it to the footer IA.</p></div><div class="gap reveal"><h3>Product pages</h3><p>Only Red Velvet has a product page. Duplicate it for every flavour.</p></div></div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="co" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">17 · Conclusion</span><h2 id="co">What I <em>learned</em></h2></div>
+      <div class="prose">
+        <p class="lead">The redesign turned a hard-to-scan bakery site into a guided ordering experience: clear categories, five focused navigation items, consistent tokens and a checkout whose totals match at every step.</p>
+        <p>This project taught me how card sorting shapes navigation, and how a design system makes a whole site consistent and quick to change. With the timeline I had, I prioritized browsing and the core purchase journey. With more time I would test the custom order and corporate quote flows with real customers.</p>
+      </div>
+    </div>
+    <div class="next-steps" style="margin-top:56px">
+      <div class="ns reveal"><span class="label">After thoughts · 1</span><h3>Match the menu to the scenario</h3><p>Vanilla and gluten-free lemon aren't on the menu yet, and there's no way to build a mixed box of several flavours.</p></div>
+      <div class="ns reveal"><span class="label">After thoughts · 2</span><h3>Close the flow gaps</h3><p>The prototype skips the guest or sign-in choice and the My Orders page where Shirin checks her status and logs out.</p></div>
+      <div class="ns reveal"><span class="label">After thoughts · 3</span><h3>Finish the pages</h3><p>Only Red Velvet has a product page, some photos are AI-generated placeholders, and screen-reader testing is my next step.</p></div>
+    </div>
+  </section>
+
+  <footer class="end wrap">
+    <div class="end-row">
+      <a class="end-card" href="arumi.html" data-hover><span class="label">← Previous case study</span><h3>ARUMI</h3></a>
+      <a class="end-card" href="index.html#work" data-hover><span class="label">Back</span><h3>All <em>work</em></h3></a>
+    </div>
+    <div class="foot label"><span>© 2026 Behina Amini</span><a href="https://www.linkedin.com/in/behina-amini-341636264" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+
+  /* lead paragraph lights word by word */
+  const lead = $('#lead'), words = [];
+  { const raw = lead.textContent.trim(); lead.textContent = '';
+    raw.split(/\s+/).forEach((w) => { const s = document.createElement('span'); s.className = 'wd'; s.textContent = w; lead.append(s, ' '); words.push(s); }); }
+
+  /* sprinkles */
+  const spr = $('#sprinkles'), cols = ['#f4b6c2', '#d6394f', '#e8b05a', '#e9d8c4', '#9ff2e4'], sprinkles = [];
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement('i'); s.className = 'sprinkle';
+    s.style.left = (45 + Math.random() * 55) + '%'; s.style.top = (Math.random() * 90) + '%';
+    s.style.background = cols[i % cols.length];
+    s._r = Math.random() * 360; s._sp = 0.2 + Math.random() * 0.9; s._spin = (Math.random() - .5) * 0.6;
+    spr.appendChild(s); sprinkles.push(s);
+  }
+
+  /* card sort: scattered → settled with scroll */
+  const board = $('#sortboard'), scards = $$('#sortboard .scard');
+  scards.forEach((c) => { c._x = (Math.random() - .5) * 220; c._y = (Math.random() - .5) * 140; c._r = (Math.random() - .5) * 40; });
+
+  const progress = $('#progress'), swirl = $('#swirl');
+  const reveals = $$('.reveal'), pars = $$('.parallax');
+  const phases = $$('.phase'), dds = $$('.dd-sticky [data-i]');
+  const flow = $('#flow'), ftrack = $('#ftrack'), stepnow = $('#stepnow'), fsteps = [...ftrack.children];
+  const stepNames = ['Product', 'Added to cart', 'Cart', 'Checkout, delivery', 'Checkout, payment', 'Order confirmed'];
+  const spacing = $$('#spacing i');
+
+  const sizeFlow = () => {
+    if (reduce) return;
+    const wrapW = ftrack.parentElement.clientWidth;
+    const extra = Math.max(0, ftrack.scrollWidth - wrapW);
+    flow.style.height = (extra + innerHeight) + 'px';
+    flow._extra = extra;
+  };
+  const sceneP = (el) => { const r = el.getBoundingClientRect(); const tot = r.height - innerHeight; return tot > 0 ? clamp(-r.top / tot) : 0; };
+
+  const frame = (t) => {
+    const y = scrollY, vh = innerHeight;
+    progress.style.transform = `scaleX(${clamp(y / (document.documentElement.scrollHeight - vh))})`;
+
+    if (!reduce && y < vh * 1.4) {
+      swirl.style.translate = `0 ${y * .2}px`;
+      sprinkles.forEach((s) => { s.style.transform = `translate3d(0, ${-y * s._sp}px, 0) rotate(${s._r + y * s._spin + t * .01 * s._spin}deg)`; });
+    }
+
+    const lr = lead.getBoundingClientRect();
+    if (lr.top < vh && lr.bottom > 0) {
+      const lit = clamp((vh * .85 - lr.top) / (lr.height + vh * .3)) * words.length;
+      words.forEach((w, i) => (w.style.opacity = (0.25 + clamp(lit - i) * .75).toFixed(3)));
+    }
+
+    reveals.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top > vh * 1.2 || r.bottom < -100) return;
+      const p = reduce ? 1 : clamp((vh - r.top) / (vh * .45));
+      el.style.setProperty('--ry', ((1 - p) * 50).toFixed(1) + 'px');
+      el.style.setProperty('--ro', (0.35 + p * .65).toFixed(3));
+    });
+
+    if (!reduce) pars.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      el.style.transform = `translate3d(0, ${(r.top + r.height / 2 - vh / 2) * +el.dataset.speed}px, 0)`;
+    });
+
+    let active = 0, best = Infinity;
+    phases.forEach((ph, i) => { const r = ph.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - vh / 2); if (d < best) { best = d; active = i; } });
+    phases.forEach((ph, i) => ph.classList.toggle('on', i === active));
+    dds.forEach((el) => el.classList.toggle('on', +el.dataset.i === active));
+
+    /* card sort */
+    const br = board.getBoundingClientRect();
+    if (br.top < vh && br.bottom > 0) {
+      const p = reduce ? 1 : clamp((vh * .9 - br.top) / (vh * .6));
+      const e = 1 - (1 - p) ** 3;
+      scards.forEach((c) => { c.style.transform = `translate3d(${c._x * (1 - e)}px, ${c._y * (1 - e)}px, 0) rotate(${c._r * (1 - e)}deg)`; });
+    }
+
+    /* spacing bars grow */
+    const sr = spacing[0].parentElement.getBoundingClientRect();
+    if (sr.top < vh && sr.bottom > 0) {
+      const g = reduce ? 1 : 0.3 + clamp((vh - sr.top) / (vh * .5)) * .7;
+      spacing.forEach((b, i) => b.style.setProperty('--g', clamp(g * 1.4 - i * .05, .2, 1).toFixed(3)));
+    }
+
+    /* purchase flow reel */
+    if (!reduce) {
+      const fp = sceneP(flow);
+      ftrack.style.transform = `translate3d(${-fp * (flow._extra || 0)}px,0,0)`;
+      const idx = Math.min(5, Math.round(fp * 5));
+      const label = `Step ${idx + 1} of 6 · ${stepNames[idx]}`;
+      if (stepnow.textContent !== label) stepnow.textContent = label;
+      fsteps.forEach((s, i) => (s.style.opacity = i === idx ? 1 : .55));
+    }
+    requestAnimationFrame(frame);
+  };
+
+  const cursor = $('#cursor');
+  let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
+  addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; });
+  $$('a, button, [data-hover]').forEach((el) => {
+    el.addEventListener('pointerenter', () => cursor.classList.add('big'));
+    el.addEventListener('pointerleave', () => cursor.classList.remove('big'));
+  });
+  (function move() { cx = lerp(cx, tx, .18); cy = lerp(cy, ty, .18); cursor.style.transform = `translate3d(${cx}px,${cy}px,0)`; requestAnimationFrame(move); })();
+
+
+  /* live homepage: slow auto-scroll with pauses, like a screen recording */
+  const view = $('#liveview'), limg = $('#liveimg'), pbtn = $('#playbtn');
+  let playing = !reduce, pos = 0, hold = 90, dir = 1, lastT = 0;
+  const setBtn = () => { pbtn.textContent = playing ? 'Pause' : 'Play'; pbtn.setAttribute('aria-pressed', String(playing)); };
+  setBtn();
+  pbtn.addEventListener('click', () => { playing = !playing; setBtn(); });
+  const stops = [0, .1, .2, .3, .42, .52, .62, .72, .82, .92, 1];
+  const live = (t) => {
+    const dt = Math.min(50, t - (lastT || t)); lastT = t;
+    const max = Math.max(0, limg.offsetHeight - view.clientHeight);
+    const vr = view.getBoundingClientRect();
+    const onScreen = vr.bottom > 0 && vr.top < innerHeight;
+    if (playing && onScreen && max > 0) {
+      if (hold > 0) hold -= dt;
+      else {
+        const prev = pos;
+        pos = clamp(pos + dir * dt * (dir > 0 ? .00006 : .0004));
+        const hit = stops.find((st) => (prev < st && pos >= st) || (prev > st && pos <= st));
+        if (pos >= 1) { dir = -1; hold = 1600; }
+        else if (pos <= 0) { dir = 1; hold = 1400; }
+        else if (dir > 0 && hit !== undefined) hold = 900;
+      }
+    }
+    limg.style.transform = `translate3d(0, ${-pos * max}px, 0)`;
+    requestAnimationFrame(live);
+  };
+  requestAnimationFrame(live);
+
+  addEventListener('resize', sizeFlow);
+  sizeFlow();
+  if (document.fonts) document.fonts.ready.then(sizeFlow);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

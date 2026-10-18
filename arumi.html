@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ARUMI Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=Playfair+Display&display=swap">
+<style>
+/* Layout: long-form case study on the portfolio's dark field; 12-col editorial grid, sticky Double Diamond, screen slots full-bleed */
+:root {
+  --bg: #08090c;
+  --surface: #101218;
+  --fg: #e8eaf0;
+  --muted: #7d8394;
+  --line: rgba(200, 208, 230, 0.12);
+  --accent: #b9c3ff;
+  --arumi: #f7b8c8;
+  --arumi-2: #ffd9c2;
+  --arumi-deep: #c46a8a;
+  --display: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --gut: clamp(16px, 4vw, 56px);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: clip; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.65; font-weight: 300; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+[hidden] { display: none !important; }
+::selection { background: var(--arumi); color: var(--bg); }
+:focus-visible { outline: 1px solid var(--arumi); outline-offset: 4px; border-radius: 2px; }
+.wrap { padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+.grain { position: fixed; inset: -50%; z-index: 90; pointer-events: none; opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite; }
+@keyframes grain { 0%{transform:translate(0,0)} 33%{transform:translate(-3%,2%)} 66%{transform:translate(2%,-3%)} 100%{transform:translate(0,0)} }
+.progress { position: fixed; top: 0; left: 0; height: 1px; width: 100%; background: var(--arumi); transform-origin: left; transform: scaleX(0); z-index: 60; }
+
+/* nav */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: calc(env(safe-area-inset-top, 0px) + 18px); padding-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; mix-blend-mode: difference; color: #fff; }
+.nav .back { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; display: inline-flex; gap: 10px; align-items: center; }
+.nav .back span { transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.nav .back:hover span { transform: translateX(-5px); }
+.nav .mark { font-family: var(--display); font-size: 22px; }
+.nav .mark i { font-style: italic; }
+.nav .proto { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+
+/* hero */
+.hero { position: relative; min-height: min(100svh, 980px); display: grid; align-content: end; overflow: hidden; padding-block: 120px clamp(32px, 6vh, 64px); }
+.hero .orb { position: absolute; right: -8vw; top: 6vh; width: min(62vw, 720px); aspect-ratio: 1; border-radius: 50%;
+  background: conic-gradient(from 210deg, var(--arumi-2), var(--arumi), var(--arumi-deep), #ffe6da, var(--arumi-2));
+  box-shadow: 0 40px 140px rgba(247,184,200,.25); animation: breathe 8s ease-in-out infinite; will-change: transform; }
+.hero .orb::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), transparent 42%); }
+.hero .veil { position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 20%, rgba(8,9,12,.55) 60%, rgba(8,9,12,.2)), linear-gradient(0deg, var(--bg), transparent 40%); }
+@keyframes breathe { 50% { border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%; } }
+.hero-inner { position: relative; display: grid; gap: 28px; }
+.hero h1 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(88px, 20vw, 320px); line-height: .8; letter-spacing: -0.04em; }
+.hero .tagline { margin: 0; font-family: var(--display); font-style: italic; font-size: clamp(26px, 3.4vw, 48px); line-height: 1.1; color: var(--arumi); max-width: 20ch; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; gap: 24px; border-top: 1px solid var(--line); padding-top: 22px; align-items: start; }
+.facts div { display: grid; gap: 6px; min-width: 0; }
+.facts b { font-weight: 400; font-size: 15px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--bg); background: var(--arumi); border-radius: 99px; padding: 12px 18px; transition: background .3s, transform .3s; white-space: nowrap; }
+.btn:hover { background: #fff; }
+
+/* sections */
+section { position: relative; }
+.sec { padding-block: clamp(90px, 14vh, 160px); }
+.grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(24px, 5vw, 80px); }
+.sec-head { display: grid; gap: 14px; align-content: start; }
+.sec-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 5vw, 76px); line-height: .95; letter-spacing: -0.03em; text-wrap: balance; }
+.sec-head h2 em { color: var(--arumi); }
+.prose { display: grid; gap: 22px; max-width: 64ch; min-width: 0; }
+.prose p { margin: 0; color: #c3c7d2; }
+.prose p.lead { font-family: var(--display); font-size: clamp(26px, 2.6vw, 36px); line-height: 1.25; color: var(--fg); letter-spacing: -0.01em; }
+.prose p.lead .wd { opacity: .25; transition: opacity .2s linear; }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+/* brief quote */
+.brief { margin: 0; padding: clamp(28px, 4vw, 48px); border: 1px solid var(--line); border-radius: 6px; background: linear-gradient(160deg, rgba(247,184,200,.06), transparent 60%); display: grid; gap: 18px; }
+.brief p { margin: 0; font-family: var(--display); font-size: clamp(22px, 2.2vw, 30px); line-height: 1.3; }
+.brief .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 5px 10px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); }
+
+/* screen slots */
+.shot { margin: 0; display: grid; gap: 12px; }
+.shot .frame { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background:
+  repeating-linear-gradient(0deg, transparent 0 31px, rgba(200,208,230,.04) 31px 32px),
+  repeating-linear-gradient(90deg, transparent 0 31px, rgba(200,208,230,.04) 31px 32px),
+  radial-gradient(circle at 70% 20%, rgba(247,184,200,.10), transparent 60%), var(--surface);
+  display: grid; place-items: center; }
+.shot .frame.tall { aspect-ratio: 4 / 5; }
+.shot .frame img { width: 100%; height: 100%; object-fit: cover; }
+.shot .ph { display: grid; gap: 8px; justify-items: center; text-align: center; padding: 16px; }
+.shot .ph .plus { width: 44px; height: 44px; border-radius: 50%; border: 1px dashed rgba(247,184,200,.5); display: grid; place-items: center; color: var(--arumi); font-size: 20px; }
+.shot figcaption { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.shot-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(16px, 2.6vw, 32px); align-items: start; }
+.parallax { will-change: transform; }
+
+
+/* live homepage "gif" */
+.browser { margin: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #15171d; box-shadow: 0 40px 120px rgba(0,0,0,.55), 0 0 0 1px rgba(247,184,200,.06); }
+.chrome { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.chrome .dots { display: flex; gap: 6px; }
+.chrome .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(200,208,230,.18); }
+.chrome .dots i:first-child { background: var(--arumi); }
+.chrome .addr { flex: 1; min-width: 0; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--muted); background: rgba(255,255,255,.04); border-radius: 99px; padding: 5px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.playbtn { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg); background: transparent; border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px; cursor: pointer; }
+.playbtn:hover { border-color: var(--arumi); }
+.viewport { position: relative; aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; background: #fff; }
+.viewport img { width: 100%; height: auto; will-change: transform; }
+.caption { display: block; margin-top: 14px; }
+.shot .frame:has(img) { aspect-ratio: 4 / 3; background: #fff; }
+.shot-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 32px); align-items: start; }
+@media (max-width: 640px) { .shot-3 { grid-template-columns: 1fr; } }
+
+
+/* iteration boards: sticky stack */
+.boards { display: grid; gap: 6vh; }
+.board { position: sticky; top: calc(72px + var(--i) * 10px); margin: 0; display: grid; gap: 14px; justify-items: center; transform-origin: 50% 0; will-change: transform; }
+.board figcaption { width: 100%; max-width: 1200px; display: flex; flex-wrap: wrap; gap: 6px 24px; align-items: baseline; justify-content: space-between; background: var(--bg); padding-block: 10px 4px; }
+.board figcaption p { margin: 0; color: #c3c7d2; font-size: 15px; max-width: 70ch; }
+.board img { max-height: 76svh; width: auto; max-width: 100%; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #f4f1ea; }
+
+/* ui kit */
+.kit { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(16px, 2.6vw, 32px); }
+.kit .tile { border: 1px solid var(--line); border-radius: 6px; padding: clamp(22px, 3vw, 36px); display: grid; gap: 16px; align-content: start; min-width: 0; background: #F3F8E9; color: #2E3324; }
+.kit .tile .label { color: #5B6450; }
+.kit-comp { grid-column: 1 / -1; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; }
+.sw { display: grid; gap: 4px; font-family: "Nunito Sans", var(--body); }
+.sw i { display: block; aspect-ratio: 16 / 10; border-radius: 6px; border: 1px solid #D5DEC6; }
+.sw b { font-weight: 700; font-size: 13px; }
+.sw span { font-size: 11px; color: #5B6450; font-variant-numeric: tabular-nums; }
+.nunito { margin: 0; font-family: "Nunito Sans", var(--body); color: #2E3324; line-height: 1.15; }
+.nunito.big { font-size: clamp(26px, 2.6vw, 34px); font-weight: 700; }
+.nunito.mid { font-size: 22px; font-weight: 700; }
+.nunito.small { font-size: 15px; font-weight: 400; }
+.nunito.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #5B6450; }
+.kit-note { margin: 6px 0 0; font-size: 14px; color: #5B6450; }
+.kit-comp .frame:has(img) { aspect-ratio: 16 / 9; }
+.kit-comp .frame img { object-position: 50% 0; }
+
+/* mobile app reel */
+.appflow { position: relative; }
+.app-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-columns: minmax(280px, 4fr) minmax(0, 8fr); align-items: center; }
+.app-copy { display: grid; gap: 16px; align-content: center; }
+.app-copy h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 4.6vw, 68px); line-height: .95; letter-spacing: -0.03em; }
+.app-copy h2 em { color: var(--arumi); }
+.app-copy > p { margin: 0; color: #c3c7d2; max-width: 42ch; }
+.app-step { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 8px; min-height: 120px; }
+.app-step p { margin: 0; font-family: var(--display); font-size: clamp(20px, 1.8vw, 26px); line-height: 1.3; max-width: 30ch; }
+.app-track-wrap { overflow: hidden; min-width: 0; }
+.app-track { display: flex; gap: clamp(16px, 2vw, 28px); padding-left: 24px; padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); width: max-content; will-change: transform; align-items: start; }
+.phone { margin: 0; display: grid; gap: 12px; justify-items: center; transition: opacity .4s, transform .4s; }
+.phone img { height: min(64svh, 560px); width: auto; border-radius: 26px; border: 6px solid #1b1d22; box-shadow: 0 30px 70px rgba(0,0,0,.5); background: #fff; }
+
+@media (max-width: 960px) {
+  .kit { grid-template-columns: 1fr; }
+  .app-pin { grid-template-columns: 1fr; align-content: center; gap: 18px; }
+  .app-copy > p { display: none; }
+  .app-step { min-height: 0; }
+  .app-track { padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); }
+  .phone img { height: min(50svh, 480px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .board { position: relative; top: 0; }
+  .appflow { height: auto !important; }
+  .app-pin { position: relative; height: auto; padding-block: 40px; }
+  .app-track-wrap { overflow-x: auto; }
+}
+
+
+/* competitive analysis board (black) */
+.ca { margin-top: 56px; background: #000; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: clamp(22px, 4vw, 56px); display: grid; gap: 32px; --ca-blue: #3b2bff; --ca-lime: #e6ff3a; }
+.ca-head { display: flex; flex-wrap: wrap; gap: 16px 24px; justify-content: space-between; align-items: center; }
+.ca-title { border-left: 6px solid var(--ca-blue); padding-left: 22px; display: grid; gap: 6px; }
+.ca-title h3 { margin: 0; font-family: var(--body); font-weight: 700; font-size: clamp(28px, 3.6vw, 48px); letter-spacing: .01em; text-transform: uppercase; line-height: 1; color: #fff; }
+.ca-title p { margin: 0; color: #9aa0ad; font-size: clamp(15px, 1.4vw, 19px); }
+.ca-pill { font-family: var(--body); font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #000; background: var(--ca-lime); border-radius: 99px; padding: 12px 22px; }
+.ca-scroll { overflow-x: auto; border-radius: 10px; }
+.ca-table { width: 100%; min-width: 880px; border-collapse: separate; border-spacing: 0; font-size: 15px; line-height: 1.5; }
+.ca-table thead th { background: #16181d; color: #fff; text-align: left; font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 20px 18px; }
+.ca-table thead th:first-child { border-top-left-radius: 10px; }
+.ca-table thead th:last-child { border-top-right-radius: 10px; }
+.ca-table tbody th, .ca-table tbody td { padding: 22px 18px; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,.07); }
+.ca-table tbody td { color: #c9ccd4; }
+.ca-table tbody td + td { border-left: 1px solid rgba(255,255,255,.07); }
+.ca-table tbody tr.b { background: #0b0c0f; }
+.ca-table tbody tr.l { background: #121419; }
+.ca-table tbody th { text-align: left; border-left: 5px solid var(--ca-blue); }
+.ca-table tbody tr.l th { border-left-color: var(--ca-lime); }
+.ca-name { display: block; font-family: var(--body); font-weight: 700; font-size: 19px; color: #fff; }
+.ca-num { display: block; font-family: var(--mono); font-size: 11px; color: #7d8394; margin-top: 4px; }
+.ca-table tbody tr { transition: background .3s; }
+.ca-table tbody tr:hover { background: #1a1d24; }
+.ca-insights { background: #0e0f13; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: clamp(20px, 3vw, 32px); display: grid; gap: 10px; }
+.ca-kicker { font-family: var(--body); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #8f86ff; }
+.ca-insights h4 { margin: 0 0 16px; font-family: var(--body); font-weight: 700; font-size: clamp(22px, 2.2vw, 28px); color: #fff; }
+.ca-ops { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.ca-op { display: flex; gap: 16px; align-items: start; }
+.ca-op b { flex: none; width: 52px; height: 52px; border-radius: 12px; background: var(--ca-lime); color: #000; display: grid; place-items: center; font-family: var(--body); font-weight: 700; font-size: 17px; }
+.ca-op h5 { margin: 0 0 4px; font-family: var(--body); font-weight: 700; font-size: 17px; color: #fff; }
+.ca-op p { margin: 0; font-size: 14px; color: #9aa0ad; }
+.comp-title { margin: 72px 0 20px; font-family: var(--display); font-weight: 400; font-size: clamp(30px, 3vw, 44px); line-height: 1; }
+@media (max-width: 760px) { .ca-ops { grid-template-columns: 1fr; } }
+
+
+/* step-by-step additions */
+.hero h1.h1-head { font-size: clamp(64px, 12vw, 200px); line-height: .86; }
+.hero h1.h1-head em { color: var(--arumi); }
+.brand-word { font-size: clamp(56px, 7vw, 110px) !important; letter-spacing: .02em !important; }
+.lead-plain { font-family: var(--display); font-size: clamp(24px, 2.4vw, 34px) !important; line-height: 1.3; color: var(--fg) !important; }
+.dd-intro { margin: 0; color: #c3c7d2; max-width: 44ch; font-size: 16px; }
+.step-label { display: block; margin-top: 72px; }
+.step-label + .ca { margin-top: 18px; }
+a.playbtn { text-decoration: none; display: inline-flex; align-items: center; }
+.anum { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--arumi); color: var(--bg); font-family: var(--mono); font-size: 13px; }
+/* affinity map */
+.am-board { background: #0e0f13; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: clamp(16px, 2.4vw, 28px); display: grid; gap: 20px; }
+.am-k { color: #9aa0ad !important; }
+.clusters { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; }
+.cluster { grid-column: span 2; background: #15171c; border: 1px solid rgba(255,255,255,.07); border-radius: 12px; padding: 18px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.cluster.wide { grid-column: span 3; }
+.cluster h4 { margin: 0; display: flex; align-items: center; gap: 12px; font-family: var(--body); font-weight: 700; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; color: #fff; }
+.cluster h4 i { font-style: normal; width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: 13px; }
+.cluster h4 i.blue { background: #3b2bff; color: #fff; }
+.cluster h4 i.lime { background: #e6ff3a; color: #000; }
+.notes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.note { position: relative; border-radius: 4px; padding: 14px 14px 18px; display: grid; gap: 6px; color: #1d1f24; font-size: 13.5px; line-height: 1.4; box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 14px 26px rgba(0,0,0,.35); will-change: transform; transform: translate3d(var(--nx,0px), var(--ny,0px), 0) rotate(var(--nr,0deg)); }
+.note b { font-family: var(--body); font-weight: 700; font-size: 13px; color: #3b2bff; }
+.note::after { content: ""; position: absolute; top: 7px; right: 10px; width: 14px; height: 4px; border-radius: 2px; background: #3b2bff; }
+.note.y { background: #fff29a; } .note.b { background: #dce6fb; } .note.w { background: #fff; }
+.note.b::after, .note.w::after { background: #c6e43a; }
+.synth { display: flex; gap: 18px; align-items: start; background: #000; border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 22px; }
+.synth > b { flex: none; width: 48px; height: 48px; border-radius: 10px; background: #e6ff3a; color: #000; display: grid; place-items: center; font-size: 22px; }
+.synth span { font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #9aa0ad; }
+.synth p { margin: 6px 0 0; font-family: var(--body); font-weight: 700; font-size: clamp(17px, 1.7vw, 22px); line-height: 1.4; color: #fff; max-width: 70ch; }
+/* persona */
+.persona { background: #000; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: clamp(18px, 3vw, 40px); display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(18px, 3vw, 40px); }
+.p-left { background: #142a3a; border-radius: 16px; padding: 18px 18px 28px; display: grid; gap: 10px; align-content: start; }
+.p-left img { width: 100%; aspect-ratio: 432 / 264; object-fit: cover; border-radius: 12px; }
+.p-left h3 { margin: 14px 0 0; font-family: var(--body); font-weight: 700; font-size: clamp(28px, 2.6vw, 38px); color: #fff; line-height: 1.05; }
+.p-role { color: #b9c6d2; font-weight: 500; }
+.p-left hr { border: 0; border-top: 1px solid rgba(255,255,255,.15); width: 100%; margin: 8px 0; }
+.p-k { font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #e6ff3a; margin-top: 6px; }
+.p-left b { font-family: var(--body); font-weight: 700; font-size: 20px; color: #fff; }
+.p-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.p-tags span { background: #23384a; color: #fff; border-radius: 99px; padding: 8px 16px; font-weight: 600; font-size: 14px; }
+.p-left p { margin: 4px 0 0; color: #d4dde5; font-size: 14px; line-height: 1.6; }
+.p-right { display: grid; gap: 18px; align-content: start; min-width: 0; }
+.p-right > h3 { margin: 0; font-family: var(--body); font-weight: 700; font-size: clamp(22px, 2.2vw, 30px); color: #fff; line-height: 1.2; }
+.p-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.p-card { background: #10141a; border: 1px solid rgba(255,255,255,.07); border-radius: 14px; padding: 22px; display: grid; gap: 14px; align-content: start; }
+.p-k2 { font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8fb3c9; }
+.p-card b { font-family: var(--body); font-weight: 700; font-size: clamp(19px, 1.7vw, 24px); color: #fff; line-height: 1.3; }
+.p-card p { margin: 0; color: #9aa0ad; font-size: 14px; }
+.p-pill { justify-self: start; background: #e6ff3a; color: #000; font-weight: 700; font-size: 12px; border-radius: 99px; padding: 6px 14px; text-transform: uppercase; }
+.p-dc { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 22px; display: grid; gap: 4px; }
+.p-sub { margin: 0 0 10px; color: #9aa0ad; font-size: 14px; }
+.p-row { display: flex; gap: 16px; align-items: start; padding-block: 12px; border-top: 1px solid rgba(255,255,255,.08); }
+.p-row:first-of-type { border-top: 0; }
+.p-row > b { flex: none; width: 44px; height: 44px; border-radius: 12px; background: #e6ff3a; color: #000; display: grid; place-items: center; font-size: 14px; }
+.p-row h5 { margin: 0 0 2px; font-family: var(--body); font-weight: 700; font-size: 16px; color: #fff; }
+.p-row p { margin: 0; color: #9aa0ad; font-size: 14px; }
+.p-note { margin: 0; color: #7d8394; font-size: 12px; }
+/* user flow image */
+.flowimg { margin: 0; display: grid; gap: 12px; justify-items: center; }
+.flowimg img { width: min(100%, 1100px); height: auto; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #f4f6f8; }
+@media (max-width: 960px) {
+  .clusters { grid-template-columns: 1fr; }
+  .cluster, .cluster.wide { grid-column: auto; }
+  .persona { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) { .p-cards { grid-template-columns: 1fr; } }
+
+
+/* live components (UI kit) */
+.kc { font-family: "Nunito Sans", var(--body); gap: 22px !important; }
+.kc-block { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.kc-k { font-family: "Nunito Sans", var(--body); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #8B957C; margin-top: 6px; }
+.kc-nav-wrap { border: 1px solid #D5DEC6; border-radius: 8px; overflow-x: auto; background: #fff; }
+.kc-util { background: #3F4A32; color: #fff; display: flex; justify-content: center; gap: 18px; padding: 8px 14px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; min-width: max-content; }
+.kc-nav { display: flex; align-items: center; gap: 22px; padding: 12px 18px; font-size: 14px; font-weight: 600; color: #2E3324; white-space: nowrap; min-width: max-content; }
+.kc-logo { font-family: "Playfair Display", Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: .12em; margin-right: 10px; display: inline-flex; align-items: center; gap: 4px; }
+.kc-logo i { width: 12px; height: 7px; border-radius: 0 100% 0 100%; background: #5F6B4D; transform: rotate(-30deg); }
+.kc-quiz { margin-left: auto; background: #3F4A32; color: #fff; border-radius: 99px; padding: 8px 16px; font-size: 13px; }
+.kc-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(18px, 3vw, 40px); }
+.kc-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.kc-btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 99px; padding: 11px 20px; font-size: 14px; font-weight: 600; }
+.kc-btn.primary { background: #3F4A32; color: #fff; }
+.kc-btn.outline { border: 1px solid #2E3324; color: #2E3324; border-radius: 4px; background: #fff; }
+.kc-btn.wide { width: 100%; padding: 9px; font-size: 13px; }
+.kc-link { font-size: 14px; color: #2E3324; text-decoration: underline; text-underline-offset: 3px; }
+.kc-chip { border: 1px solid #D5DEC6; border-radius: 99px; padding: 6px 14px; font-size: 13px; color: #2E3324; background: #fff; }
+.kc-chip.on { background: #2E3324; color: #fff; border-color: #2E3324; }
+.kc-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: #EEF3E6; color: #3F4A32; }
+.kc-badge.new { background: #C5D89D; color: #2E3324; }
+.kc-badge.sale { background: #B3474E; color: #fff; border-radius: 4px; }
+.kc-badge.match { background: #3F4A32; color: #fff; }
+.kc-opt { flex: 1 1 160px; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 2px; align-items: center; background: #fff; border: 1px solid #D5DEC6; border-radius: 6px; padding: 12px 14px; }
+.kc-opt i { grid-row: span 2; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #2E3324; }
+.kc-opt.on { border: 2px solid #2E3324; }
+.kc-opt.on i { background: #2E3324; box-shadow: inset 0 0 0 3px #fff; }
+.kc-opt b { font-size: 14px; color: #2E3324; }
+.kc-opt small { font-size: 12px; color: #5B6450; }
+.kc-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.kc-card { display: grid; gap: 6px; align-content: start; font-size: 13px; color: #2E3324; }
+.kc-tag { font-size: 11px; color: #5B6450; }
+.kc-card img { width: 100%; aspect-ratio: 175 / 166; object-fit: cover; border-radius: 2px; }
+.kc-card b { font-size: 14px; font-weight: 700; margin-top: 4px; }
+.kc-stars { font-size: 12px; color: #2E3324; letter-spacing: .05em; }
+.kc-stars em { font-style: normal; color: #5B6450; letter-spacing: 0; }
+.kc-meta { font-size: 12px; color: #5B6450; }
+.kc-price { display: flex; justify-content: space-between; align-items: baseline; margin: 4px 0 6px; }
+.kc-price strong { font-size: 15px; }
+.kc-price u { font-size: 12px; color: #5B6450; text-underline-offset: 2px; }
+@media (max-width: 760px) { .kc-grid { grid-template-columns: 1fr; } }
+
+/* double diamond */
+.dd { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); }
+.dd-sticky { position: sticky; top: 0; align-self: start; height: 100svh; display: grid; align-content: center; gap: 24px; }
+.dd-sticky svg { width: 100%; height: auto; overflow: visible; }
+.dd-sticky .d { fill: rgba(247,184,200,.03); stroke: rgba(200,208,230,.22); stroke-width: 1; transition: fill .5s, stroke .5s; }
+.dd-sticky .d.on { fill: rgba(247,184,200,.16); stroke: var(--arumi); }
+.dd-sticky text { font-family: var(--mono); font-size: 11px; letter-spacing: 1.4px; fill: var(--muted); transition: fill .5s; }
+.dd-sticky text.on { fill: var(--fg); }
+.dd-steps { display: grid; padding-block: 30vh; gap: 30vh; }
+.phase { display: grid; gap: 14px; opacity: .3; transition: opacity .5s; }
+.phase.on { opacity: 1; }
+.phase h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 4.6vw, 68px); line-height: 1; }
+.phase h3 em { color: var(--arumi); }
+.phase p { margin: 0; color: #c3c7d2; max-width: 48ch; }
+
+/* competitors */
+.comp { display: grid; border-top: 1px solid var(--line); }
+.comp-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); gap: 24px; padding-block: 22px; border-bottom: 1px solid var(--line); align-items: baseline; transition: background .4s; }
+.comp-row:hover { background: rgba(247,184,200,.04); }
+.comp-row h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(26px, 2.6vw, 36px); line-height: 1; }
+.comp-row p { margin: 0; color: #c3c7d2; font-size: 15px; }
+.insight { margin-top: 40px; padding: 28px 0 0; border-top: 1px solid var(--arumi); font-family: var(--display); font-size: clamp(24px, 2.6vw, 36px); line-height: 1.25; max-width: 34ch; }
+.insight::before { content: "Insight"; display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--arumi); margin-bottom: 14px; }
+
+/* design areas */
+.areas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.area { padding: 24px 20px 24px 0; display: grid; gap: 14px; align-content: start; }
+.area + .area { padding-left: 20px; border-left: 1px solid var(--line); }
+.area .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--arumi); box-shadow: 0 0 14px var(--arumi); }
+.area h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.05; }
+.area p { margin: 0; color: var(--muted); font-size: 14px; }
+
+/* flow */
+.flow { border: 1px solid var(--line); border-radius: 6px; background: repeating-linear-gradient(0deg, transparent 0 23px, rgba(200,208,230,.04) 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, rgba(200,208,230,.04) 23px 24px), #0c0d12; overflow-x: auto; }
+.flow svg { display: block; min-width: 760px; width: 100%; height: auto; }
+.flow .flow-path { stroke-dasharray: 6 6; animation: dash 3s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -48; } }
+
+/* validate */
+.results { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 80px); align-items: end; }
+.big-num { display: grid; gap: 8px; }
+.big-num b { font-family: var(--display); font-weight: 400; font-size: clamp(96px, 14vw, 220px); line-height: .85; letter-spacing: -0.04em; color: var(--arumi); font-variant-numeric: tabular-nums; }
+.big-num b small { font-size: .35em; color: var(--muted); letter-spacing: 0; }
+.chart { position: relative; height: 340px; display: grid; grid-template-columns: 1fr 1fr; gap: 18%; align-items: end; padding-inline: 12%; border-bottom: 1px solid var(--line); }
+.chart .gl { position: absolute; left: 0; right: 0; border-top: 1px dashed rgba(200,208,230,.12); }
+.chart .gl span { position: absolute; left: 0; top: -18px; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.chart .col { position: relative; height: 100%; display: grid; align-items: end; }
+.chart .bar { position: relative; border-radius: 4px 4px 0 0; transform-origin: bottom; transform: scaleY(var(--g, 1)); }
+.chart .r1 { height: calc(2.5 / 7 * 100%); background: rgba(200,208,230,.18); }
+.chart .r2 { height: calc(6.5 / 7 * 100%); background: linear-gradient(var(--arumi), var(--arumi-deep)); box-shadow: 0 0 60px rgba(247,184,200,.25); }
+.chart .bar b { position: absolute; left: 0; right: 0; top: -44px; text-align: center; font-family: var(--display); font-weight: 400; font-size: 32px; font-variant-numeric: tabular-nums; }
+.chart-x { display: grid; grid-template-columns: 1fr 1fr; gap: 18%; padding-inline: 12%; text-align: center; padding-top: 12px; }
+
+/* after thoughts */
+.next-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 32px); }
+.ns { border: 1px solid var(--line); border-radius: 6px; padding: 28px; display: grid; gap: 12px; align-content: start; }
+.ns h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 30px; line-height: 1.05; }
+.ns p { margin: 0; color: #c3c7d2; font-size: 15px; }
+
+/* footer */
+.end { padding-block: clamp(100px, 16vh, 180px) 32px; display: grid; gap: 48px; }
+.end-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.end-card { display: grid; gap: 14px; padding: 28px; border: 1px solid var(--line); border-radius: 6px; min-height: 220px; align-content: space-between; transition: border-color .4s, background .4s; }
+a.end-card:hover { border-color: var(--arumi); background: rgba(247,184,200,.05); }
+.end-card h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(36px, 4.6vw, 72px); line-height: .95; letter-spacing: -0.02em; }
+.end-card h3 em { color: var(--muted); }
+.end-card.soon { border-style: dashed; }
+.foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+.reveal { transform: translateY(var(--ry, 0px)); opacity: var(--ro, 1); }
+
+.cursor { position: fixed; left: 0; top: 0; width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1px solid #fff; border-radius: 50%; pointer-events: none; z-index: 100; mix-blend-mode: difference; transition: width .35s cubic-bezier(.2,.8,.2,1), height .35s, margin .35s, background .35s; display: none; }
+.cursor.big { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: #fff; }
+@media (pointer: fine) { .cursor { display: block; } }
+
+@media (max-width: 960px) {
+  .grid, .dd, .results { grid-template-columns: 1fr; }
+  .dd-sticky { position: relative; height: auto; padding-top: 0; }
+  .dd-steps { padding-block: 24px; gap: 56px; }
+  .phase { opacity: 1; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .area:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .area:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 640px) {
+  .nav .mark { display: none; }
+  .shot-row, .next-steps, .end-row { grid-template-columns: 1fr; }
+  .comp-row { grid-template-columns: 1fr; gap: 8px; }
+  .areas { grid-template-columns: 1fr; }
+  .area, .area + .area { padding: 20px 0; border-left: 0; }
+  .area + .area { border-top: 1px solid var(--line); }
+  .chart { height: 260px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain, .hero .orb, .flow .flow-path { animation: none; }
+}
+
+/* calm cards: no movement on cards, notes, boards or screenshots */
+.reveal { transform: none !important; opacity: 1 !important; }
+.note { transform: none !important; }
+.parallax { transform: none !important; }
+.board { position: relative !important; top: 0 !important; transform: none !important; filter: none !important; }
+.phone { transform: none !important; }
+.ca-table tbody tr, .card, .comp-row { transition: none !important; }
+</style>
+</head>
+<body>
+<script>
+/* always open a case study at the top, not where the last page was scrolled */
+try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+(function () {
+  var top = function () { if (!location.hash) window.scrollTo(0, 0); };
+  top();
+  addEventListener('DOMContentLoaded', top);
+  addEventListener('load', function () { top(); setTimeout(top, 60); });
+  addEventListener('pageshow', top);
+})();
+</script>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<nav class="nav wrap" aria-label="Case study">
+  <a class="back" href="index.html#work"><span>←</span> All work</a>
+  <a class="mark" href="index.html">Behina <i>Amini</i></a>
+  <a class="proto" href="https://www.figma.com/proto/TD1oVpAPpnkSgfKC1Vd0jh/ARUMI__K-Beauty-E-Commerce?node-id=1367-2903&amp;starting-point-node-id=1367%3A2903" target="_blank" rel="noopener">Prototype ↗</a>
+</nav>
+
+<main>
+  <header class="hero wrap">
+    <div class="orb" id="orb" aria-hidden="true"></div>
+    <div class="veil" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <span class="label">Case study 01 · K-beauty e-commerce</span>
+      <h1 class="h1-head">Healthy Skin, <em>Happier You</em></h1>
+      <p class="tagline">Korean skincare for a calmer, brighter everyday.</p>
+      <div class="facts">
+        <div><span class="label">Role</span><b>User research, UI design</b></div>
+        <div><span class="label">Timeline</span><b>2 months, part-time</b></div>
+        <div><span class="label">Platform</span><b>Desktop and mobile</b></div>
+        <div><span class="label">Method</span><b>Double Diamond</b></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec wrap" aria-labelledby="ov" style="padding-bottom:56px">
+    <div class="grid">
+      <div class="sec-head"><span class="label">01 · The project</span><h2 id="ov" class="brand-word">Arumi</h2></div>
+      <div class="prose">
+        <p class="lead" id="lead">Arumi is an online store specializing in Korean skincare products. The business aims to sell products directly to customers across desktop and mobile.</p>
+        <p>Its main focus is providing authentic products, a simple shopping experience, and personalized recommendations based on each user’s skin type. Arumi operates within the beauty and skincare industry, offering Korean skincare products such as serums, toners, moisturizers, sunscreens, and face masks. Its primary revenue comes from direct product sales.</p>
+        <p><a class="btn" href="https://www.figma.com/proto/TD1oVpAPpnkSgfKC1Vd0jh/ARUMI__K-Beauty-E-Commerce?node-id=1367-2903&amp;starting-point-node-id=1367%3A2903" target="_blank" rel="noopener" data-hover>View prototype ↗</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="ARUMI homepage prototype">
+    <figure class="browser reveal" id="live">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">ARUMI · Homepage prototype</span><a class="playbtn" href="https://www.figma.com/proto/TD1oVpAPpnkSgfKC1Vd0jh/ARUMI__K-Beauty-E-Commerce?node-id=1367-2903&amp;starting-point-node-id=1367%3A2903" target="_blank" rel="noopener" data-hover>Open in Figma ↗</a><button class="playbtn" id="playbtn" type="button" aria-pressed="true" data-hover>Pause</button></div>
+      <div class="viewport" id="liveview"><img id="liveimg" src="img/arumi-home.jpg" alt="The full redesigned ARUMI homepage, scrolling from the hero to the footer"></div>
+    </figure>
+    <p class="caption label">The ARUMI homepage prototype, scrolling top to bottom</p>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="br">
+    <div class="grid">
+      <div class="sec-head"><span class="label">02 · Role</span><h2>My <em>part</em></h2></div>
+      <div class="prose"><p class="lead-plain">I worked part-time on this project for two months. I collaborated with my teams throughout the project while contributing to user research and UI design.</p></div>
+    </div>
+    <div class="grid" style="margin-top:72px">
+      <div class="sec-head"><span class="label">Stakeholder</span><h2 id="br">What the business <em>asked for</em></h2></div>
+      <blockquote class="brief reveal">
+        <p>We asked the design team to create a complete information architecture for our business so users can clearly understand what we offer and how our services work. The experience should include services such as a skincare quiz, personalized product recommendations, product comparison, online checkout, order history, and return requests. However, the user flows should focus on the specific desktop and mobile tasks we provided. If the team needs clarification about the business, service scope, or priorities, they should ask us before making assumptions.</p>
+        <div class="chips"><span class="chip">Skincare quiz</span><span class="chip">Personalized recommendations</span><span class="chip">Product comparison</span><span class="chip">Online checkout</span><span class="chip">Order history</span><span class="chip">Return requests</span></div>
+      </blockquote>
+    </div>
+    <div class="grid" style="margin-top:72px">
+      <div class="sec-head"><span class="label">Process</span><h2>From discovery <em>to delivery</em></h2></div>
+      <div class="prose"><p>I used the Double Diamond framework to guide the project from discovery to delivery. I explored the skincare e-commerce landscape through competitive analysis, defined the scope based on the stakeholder brief and selected user tasks, developed the information architecture and design concepts, and delivered the final experience for the specified desktop and mobile journeys.</p></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="pr" style="padding-top:0">
+    <div class="dd" id="dd">
+      <div class="dd-sticky">
+        <div class="sec-head"><span class="label">03 · Double Diamond</span><h2 id="pr">Double <em>Diamond</em></h2><p class="dd-intro">I used the Double Diamond framework to guide my project from exploring the skincare e-commerce landscape to delivering a focused desktop and mobile experience.</p></div>
+        <svg viewBox="0 0 520 220" aria-hidden="true">
+          <polygon class="d" data-i="0" points="10,110 135,20 135,200"/>
+          <polygon class="d" data-i="1" points="135,20 260,110 135,200"/>
+          <polygon class="d" data-i="2" points="260,110 385,20 385,200"/>
+          <polygon class="d" data-i="3" points="385,20 510,110 385,200"/>
+          <text data-i="0" x="72" y="215" text-anchor="middle">DISCOVER</text>
+          <text data-i="1" x="198" y="215" text-anchor="middle">DEFINE</text>
+          <text data-i="2" x="322" y="215" text-anchor="middle">DEVELOP</text>
+          <text data-i="3" x="448" y="215" text-anchor="middle">DELIVER</text>
+        </svg>
+      </div>
+      <div class="dd-steps">
+        <div class="phase" data-i="0"><span class="label">Phase 1</span><h3>Discover</h3><p>I conducted a competitive analysis of five skincare e-commerce websites, comparing their navigation, product information, personalization, trust signals, calls to action, and overall user experience. This helped me identify common patterns and opportunities to improve product discovery.</p></div>
+        <div class="phase" data-i="1"><span class="label">Phase 2</span><h3>Define</h3><p>I reviewed the stakeholder brief to clarify the business services, project scope, and assigned desktop and mobile tasks. This helped me determine what the website needed to communicate and which user journeys to focus on.</p></div>
+        <div class="phase" data-i="2"><span class="label">Phase 3</span><h3>Develop</h3><p>I created the information architecture and mapped the specified desktop and mobile user flows. These helped organize the business’s services and define clear paths for users to complete the selected tasks.</p></div>
+        <div class="phase" data-i="3"><span class="label">Phase 4</span><h3>Deliver</h3><p>I translated the information architecture and user flows into the final desktop and mobile designs, supporting the selected journeys for product discovery, comparison, checkout, order history, and returns.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="rs" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">04 · Research</span><h2 id="rs">Research</h2></div>
+      <div class="prose"><p>I conducted a competitive analysis of five skincare e-commerce websites to understand how they support product discovery and purchasing. I compared their navigation and search, product information, personalization, trust signals, calls to action, and overall user experience. By identifying each website’s strengths and limitations, I found patterns and opportunities that helped guide the design direction for Arumi.</p></div>
+    </div>
+    <span class="label step-label">05 · Competitive analysis</span>
+    <div class="ca reveal" aria-labelledby="ca-title">
+      <div class="ca-head">
+        <div class="ca-title"><h3 id="ca-title">Competitive analysis</h3><p>A comparison of five skincare e-commerce platforms</p></div>
+        <span class="ca-pill">Discover / Research</span>
+      </div>
+      <div class="ca-scroll">
+        <table class="ca-table">
+          <thead><tr><th scope="col">Website</th><th scope="col">Navigation &amp; search</th><th scope="col">Product information</th><th scope="col">Personalization</th><th scope="col">Trust signals &amp; CTA</th><th scope="col">Overall UX</th></tr></thead>
+          <tbody>
+            <tr class="b"><th scope="row"><span class="ca-name">YesStyle</span><span class="ca-num">01</span></th><td>Filters by skin type, brand &amp; ingredients</td><td>Detailed descriptions, ingredients &amp; reviews</td><td>Product and routine suggestions</td><td>Many reviews, ratings &amp; customer photos; clear Add to Bag / Quick Buy</td><td>Feature-rich, but pages can feel crowded</td></tr>
+            <tr class="l"><th scope="row"><span class="ca-name">Soko Glam</span><span class="ca-num">02</span></th><td>Simple navigation by skin concern</td><td>Scientific, educational product details</td><td>Routine guidance and skincare tips</td><td>Educational content; clear, minimal CTAs</td><td>Simple, professional experience</td></tr>
+            <tr class="b"><th scope="row"><span class="ca-name">StyleKorean</span><span class="ca-num">03</span></th><td>Simple, brand-based navigation</td><td>Moderate product descriptions</td><td>Limited personalization</td><td>Customer reviews; standard CTA</td><td>Usable, with a less modern interface</td></tr>
+            <tr class="l"><th scope="row"><span class="ca-name">Jolse</span><span class="ca-num">04</span></th><td>Simple categories; limited search</td><td>Basic product information</td><td>No personalization</td><td>Limited reviews; simple CTA</td><td>Relatively dated experience</td></tr>
+            <tr class="b"><th scope="row"><span class="ca-name">Peach &amp; Lily</span><span class="ca-num">05</span></th><td>Clear, intuitive navigation</td><td>Detailed scientific descriptions</td><td>Skin quiz and routine builder</td><td>Brand credibility and expert recommendations; clear, minimal CTA</td><td>Distinctive, premium experience</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ca-insights">
+        <span class="ca-kicker">Key insights</span>
+        <h4>Opportunities for ARUMI</h4>
+        <div class="ca-ops">
+          <div class="ca-op"><b>01</b><div><h5>Make discovery intuitive</h5><p>Use clear categories and skin concerns.</p></div></div>
+          <div class="ca-op"><b>02</b><div><h5>Build product confidence</h5><p>Pair product details with visible reviews and trust cues.</p></div></div>
+          <div class="ca-op"><b>03</b><div><h5>Personalize the journey</h5><p>Link quiz results to relevant products and routines.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="af" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">06 · Affinity Map</span><h2 id="af">Affinity <em>Map</em></h2></div>
+      <div class="prose"><p>The competitive analysis revealed an opportunity for Arumi to make skincare product discovery and selection more guided and confidence-building by combining skin-focused navigation, clear product information, personalized recommendations, and visible trust signals.</p></div>
+    </div>
+    <div class="ca am reveal">
+      <div class="ca-head">
+        <div class="ca-title"><h3>Affinity map</h3><p>Competitive analysis findings grouped into recurring themes</p></div>
+        <span class="ca-pill">5 skincare websites</span>
+      </div>
+      <div class="am-board" id="amboard">
+        <span class="ca-kicker am-k">Observations clustered by theme</span>
+        <div class="clusters">
+          <div class="cluster"><h4><i class="blue">01</i>Product discovery</h4><div class="notes"><div class="note y"><b>YesStyle</b><span>Filters by skin type, brand and ingredients</span></div><div class="note b"><b>Soko Glam</b><span>Navigation organized by skin concern</span></div><div class="note w"><b>StyleKorean</b><span>Brand-based navigation</span></div><div class="note b"><b>Jolse</b><span>Simple categories; limited search</span></div><div class="note y"><b>Peach &amp; Lily</b><span>Clear, simple navigation</span></div></div></div>
+          <div class="cluster"><h4><i class="lime">02</i>Product information</h4><div class="notes"><div class="note y"><b>YesStyle</b><span>Detailed descriptions, ingredients and reviews</span></div><div class="note b"><b>Soko Glam</b><span>Scientific details and educational content</span></div><div class="note w"><b>StyleKorean</b><span>Moderate product descriptions</span></div><div class="note b"><b>Jolse</b><span>Basic product information</span></div><div class="note y"><b>Peach &amp; Lily</b><span>Detailed scientific descriptions</span></div></div></div>
+          <div class="cluster"><h4><i class="blue">03</i>Personalization</h4><div class="notes"><div class="note y"><b>YesStyle</b><span>Product and routine suggestions</span></div><div class="note b"><b>Soko Glam</b><span>Routine guidance and skincare tips</span></div><div class="note w"><b>StyleKorean</b><span>Limited personalization</span></div><div class="note b"><b>Jolse</b><span>No personalization</span></div><div class="note y"><b>Peach &amp; Lily</b><span>Skin quiz and routine builder</span></div></div></div>
+          <div class="cluster wide"><h4><i class="lime">04</i>Trust &amp; credibility</h4><div class="notes"><div class="note b"><b>YesStyle</b><span>Reviews, ratings and customer photos</span></div><div class="note y"><b>Soko Glam</b><span>Educational content builds credibility</span></div><div class="note w"><b>StyleKorean</b><span>Customer reviews</span></div><div class="note y"><b>Jolse</b><span>Limited reviews</span></div><div class="note b"><b>Peach &amp; Lily</b><span>Brand credibility and expert recommendations</span></div></div></div>
+          <div class="cluster wide"><h4><i class="blue">05</i>Shopping experience</h4><div class="notes"><div class="note b"><b>YesStyle</b><span>Clear Add to Bag / Quick Buy; pages can feel crowded</span></div><div class="note y"><b>Soko Glam</b><span>Clear, minimal CTA; simple, professional UX</span></div><div class="note w"><b>StyleKorean</b><span>Standard CTA; usable, less modern interface</span></div><div class="note y"><b>Jolse</b><span>Simple CTA; relatively dated experience</span></div><div class="note b"><b>Peach &amp; Lily</b><span>Clear, minimal CTA; distinctive, premium UX</span></div></div></div>
+        </div>
+        <div class="synth"><b>→</b><div><span>Synthesis for Arumi</span><p>Combine clear skin-focused discovery with useful product education, quiz-led routines, visible trust signals, and focused calls to action—without crowding the experience.</p></div></div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:96px;margin-bottom:40px">
+      <div class="sec-head"><span class="label">Design areas</span><h2>Five areas to <em>guide the design</em></h2></div>
+      <div class="prose"><p>Based on the stakeholder brief and my competitive analysis, I identified five areas to guide the design of Arumi:</p></div>
+    </div>
+    <div class="areas"><div class="area reveal"><span class="anum">1</span><h3>Product Discovery</h3><p>Make it easy for customers to find products by skin type, skin concern, or category.</p></div><div class="area reveal"><span class="anum">2</span><h3>Personalized Recommendations</h3><p>Use a skincare quiz to recommend products based on each customer’s needs.</p></div><div class="area reveal"><span class="anum">3</span><h3>Product Evaluation</h3><p>Present clear product details and make it easy to compare products.</p></div><div class="area reveal"><span class="anum">4</span><h3>Purchase Confidence</h3><p>Build trust with clear product information, customer reviews, and a straightforward checkout process.</p></div><div class="area reveal"><span class="anum">5</span><h3>Post-Purchase Support</h3><p>Make order history and product return requests easy to access and manage.</p></div></div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="hi" style="padding-top:0">
+    <div class="grid" style="margin-bottom:40px">
+      <div class="sec-head"><span class="label">07 · Insights</span><h2 id="hi">How the Competitive Analysis <em>Informed Arumi</em></h2></div>
+      <div class="prose"><p>Overall, the analysis helped me identify useful patterns and opportunities across competitor websites. I used these findings to guide Arumi’s product discovery, product information, personalization, trust-building, and shopping experience.</p></div>
+    </div>
+    <div class="comp">
+      <div class="comp-row reveal"><h3>YesStyle</h3><p>Its filters, detailed product information, and customer reviews showed me how useful it can be to support product discovery and help customers evaluate products. Its feature-rich interface also reminded me to keep Arumi’s experience clear and easy to navigate.</p></div>
+      <div class="comp-row reveal"><h3>Soko Glam</h3><p>Its skin-concern-based navigation and educational content inspired me to consider ways Arumi could help customers find relevant products and understand their skincare choices.</p></div>
+      <div class="comp-row reveal"><h3>StyleKorean</h3><p>Its brand-based navigation and customer reviews highlighted the value of making brand discovery straightforward and including customer feedback on product pages.</p></div>
+      <div class="comp-row reveal"><h3>Jolse</h3><p>Its basic product information and limited personalization helped me identify opportunities for Arumi to provide more helpful product details and more tailored recommendations.</p></div>
+      <div class="comp-row reveal"><h3>Peach &amp; Lily</h3><p>Its skincare quiz, routine builder, and expert recommendations showed how personalization and credible guidance could support customers as they choose products.</p></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="pe" style="padding-top:0">
+    <div class="sec-head" style="margin-bottom:40px"><span class="label">08 · Persona</span><h2 id="pe">Who we are <em>designing for</em></h2></div>
+    <div class="persona reveal">
+      <div class="p-left">
+        <img src="img/arumi-persona.jpg" alt="Portrait of the fictional persona Maya Brooks" loading="lazy">
+        <h3>Maya Brooks</h3>
+        <span class="p-role">The Busy Skincare Shopper</span>
+        <hr>
+        <span class="p-k">Profile</span>
+        <b>Personal banker</b>
+        <span class="p-k">Discovery channels</span>
+        <div class="p-tags"><span>Instagram</span><span>TikTok</span></div>
+        <p>Often encounters Korean skincare through influencers and beauty creators.</p>
+      </div>
+      <div class="p-right">
+        <h3>A time-conscious shopper exploring Korean skincare</h3>
+        <div class="p-cards">
+          <div class="p-card"><span class="p-k2">Primary goal</span><b>Achieve healthier, glowing skin.</b><span class="p-pill">Goal</span></div>
+          <div class="p-card"><span class="p-k2">Shopping behaviour</span><b>Prefers online shopping because of her busy schedule.</b><p>Influencer content often introduces her to products.</p></div>
+        </div>
+        <div class="p-dc">
+          <span class="p-k2">Design considerations to explore</span>
+          <p class="p-sub">Potential directions based on this persona profile</p>
+          <div class="p-row"><b>01</b><div><h5>Make product discovery quick</h5><p>Help shoppers browse by skin type, concern, or product category.</p></div></div>
+          <div class="p-row"><b>02</b><div><h5>Support confident evaluation</h5><p>Present clear product details and useful trust signals.</p></div></div>
+          <div class="p-row"><b>03</b><div><h5>Make recommendations feel relevant</h5><p>Explore a skincare quiz that can guide shoppers toward suitable products.</p></div></div>
+        </div>
+        <p class="p-note">Name and portrait are fictional; design considerations are hypotheses, not validated user findings.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="id" style="padding-top:0">
+    <div class="grid" style="margin-bottom:40px">
+      <div class="sec-head"><span class="label">09 · Ideate</span><h2 id="id">User <em>flow</em></h2></div>
+      <div class="prose"><p>This user flow maps the key steps and decision points across product discovery, personalized recommendations, product comparison, checkout, and post-purchase support, showing how research insights informed Arumi’s design.</p></div>
+    </div>
+    <figure class="flowimg reveal"><img src="img/arumi-userflow.webp" alt="ARUMI branched desktop user flow with five research themes mapped to design responses, plus the mobile return path" loading="lazy"><figcaption class="label">Research → branched user flow → design response</figcaption></figure>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="it" style="padding-top:0">
+    <div class="grid" style="margin-bottom:48px">
+      <div class="sec-head"><span class="label">10 · Sketches</span><h2 id="it">Sketches</h2></div>
+      <div class="prose"><p>I began with low-fidelity sketches to map the homepage and key shopping sections. In the first prototype, I noticed that navigation and product discovery could be clearer, so I refined the next iteration to make the skincare quiz, product information, and shopping paths easier to find.</p><p class="label">Before (v1) and after (v5 redesign) · scroll to flip through</p></div>
+    </div>
+    <div class="boards" id="boards">
+      <figure class="board" style="--i:0">
+        <figcaption><span class="label">01 · Home</span><p>Three stacked header bands became one slim bar and a nav organised by skin type, concerns, brands and sets, with the quiz as the hero.</p></figcaption>
+        <img src="img/arumi-ba-1.webp" alt="ARUMI Home: before (v1) and after (v5 redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board" style="--i:1">
+        <figcaption><span class="label">02 · Shop All</span><p>No title or filters became a page with filter chips, a regimen guide and seven sections in routine order, cleanse to protect.</p></figcaption>
+        <img src="img/arumi-ba-2.webp" alt="ARUMI Shop All: before (v1) and after (v5 redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board" style="--i:2">
+        <figcaption><span class="label">03 · New Arrivals → New & Featured</span><p>A single "New" label became a launch banner, a 4-column "New this week" grid and featured edits tied to skin goals.</p></figcaption>
+        <img src="img/arumi-ba-3.webp" alt="ARUMI New Arrivals → New & Featured: before (v1) and after (v5 redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board" style="--i:3">
+        <figcaption><span class="label">04 · Quiz intro</span><p>A grey one-liner and a sage button that failed contrast (2.45:1) became "Five questions. One routine that fits." with a dark CTA and no account wall.</p></figcaption>
+        <img src="img/arumi-ba-4.webp" alt="ARUMI Quiz intro: before (v1) and after (v5 redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board" style="--i:4">
+        <figcaption><span class="label">05 · Quiz question</span><p>Checkboxes that implied multi-select became single-select photo cards, a progress rail and a "Why we ask" note.</p></figcaption>
+        <img src="img/arumi-ba-5.webp" alt="ARUMI Quiz question: before (v1) and after (v5 redesign) with annotations" loading="lazy">
+      </figure>
+      <figure class="board" style="--i:5">
+        <figcaption><span class="label">06 · Quiz result</span><p>Three equal products per step and twelve "Add to bag" buttons became four matched options per step, a compare table and one "Add routine to bag".</p></figcaption>
+        <img src="img/arumi-ba-6.webp" alt="ARUMI Quiz result: before (v1) and after (v5 redesign) with annotations" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Final designs">
+    <div class="grid" style="margin-bottom:40px">
+      <div class="sec-head"><span class="label">11 · Final design · Redesign v5</span><h2>The quiz, <em>start to result</em></h2></div>
+      <div class="prose"><p>In v5 the quiz became a five-step regimen builder: climate, skin type, concerns, budget and routine length. It ends in a skin profile with four matched options per step and one button to add the whole routine to the bag.</p></div>
+    </div>
+    <div class="shot-3">
+      <figure class="shot"><div class="frame parallax" data-speed=".05"><img src="img/arumi-quiz-intro.jpg" alt="Quiz intro: Five questions. One routine that fits." loading="lazy"></div><figcaption><span class="label">Quiz intro</span><span class="label">Desktop</span></figcaption></figure>
+      <figure class="shot"><div class="frame parallax" data-speed="-.06"><img src="img/arumi-quiz-step.jpg" alt="Step 1 of 5: Where do you live? with climate photo cards" loading="lazy"></div><figcaption><span class="label">Step 1 of 5 · Climate</span><span class="label">Desktop</span></figcaption></figure>
+      <figure class="shot"><div class="frame parallax" data-speed=".07"><img src="img/arumi-quiz-result.jpg" alt="Result: Hydration Seeker profile with four matched cleansers" loading="lazy"></div><figcaption><span class="label">Result · Hydration Seeker</span><span class="label">Desktop</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="kit">
+    <div class="grid" style="margin-bottom:48px">
+      <div class="sec-head"><span class="label">12 · UI Kit v5</span><h2 id="kit">One green tone, <em>every fill a variable</em></h2></div>
+      <div class="prose"><p>The v5 kit is a light-green monotone. Primitives live in Green/*, semantic aliases in v5/*, and every fill in the kit is bound to a variable. Each component is lifted from the live v5 screens, so the kit and the pages match one to one.</p></div>
+    </div>
+    <div class="kit">
+      <div class="tile reveal kit-colour">
+        <span class="label">Foundations · Colour</span>
+        <div class="swatches">
+          <div class="sw"><i style="background:#2E3324"></i><b>Green/ink</b><span>#2E3324 · text/primary</span></div>
+          <div class="sw"><i style="background:#5B6450"></i><b>Green/ink-2</b><span>#5B6450 · text/secondary</span></div>
+          <div class="sw"><i style="background:#8B957C"></i><b>Green/muted</b><span>#8B957C · text/muted</span></div>
+          <div class="sw"><i style="background:#D5DEC6"></i><b>Green/line</b><span>#D5DEC6 · border/default</span></div>
+          <div class="sw"><i style="background:#EEF3E6"></i><b>Green/tint</b><span>#EEF3E6 · surface/tint</span></div>
+          <div class="sw"><i style="background:#F3F8E9"></i><b>Green/tint-2</b><span>#F3F8E9 · surface/tint-2</span></div>
+          <div class="sw"><i style="background:#3F4A32"></i><b>Green/deep</b><span>#3F4A32 · action/primary</span></div>
+          <div class="sw"><i style="background:#5F6B4D"></i><b>Green/brand</b><span>#5F6B4D · accent/brand</span></div>
+          <div class="sw"><i style="background:#C5D89D"></i><b>Green/lime</b><span>#C5D89D · accent/lime</span></div>
+          <div class="sw"><i style="background:#B3474E"></i><b>Green/sale</b><span>#B3474E · status/sale</span></div>
+          <div class="sw"><i style="background:#FFFFFF"></i><b>Green/white</b><span>#FFFFFF · surface/page</span></div>
+        </div>
+      </div>
+      <div class="tile reveal kit-type">
+        <span class="label">Foundations · Type · Nunito Sans</span>
+        <p class="nunito big">Skincare matched to your skin, not the trend.</p>
+        <p class="nunito mid">Skincare matched to your skin, not the trend.</p>
+        <p class="nunito small">Skincare matched to your skin, not the trend.</p>
+        <p class="nunito eyebrow">Skincare matched to your skin, not the trend</p>
+        <p class="kit-note">14 text styles, from Display 44 Bold to Eyebrow 11 SemiBold. Nunito Sans stands in for Avenir Next in production; Playfair Display is used only for the ARUMI wordmark.</p>
+      </div>
+      <div class="tile reveal kit-comp kc">
+        <span class="label">Components · v5 · lifted from the live screens, so kit and pages match one to one</span>
+        <div class="kc-block">
+          <span class="kc-k">Global · utility bar / main nav</span>
+          <div class="kc-nav-wrap">
+            <div class="kc-util"><span>‹</span><span>Free samples on orders $60+</span><span>·</span><span>Free shipping across Canada over $75</span><span>›</span></div>
+            <div class="kc-nav"><span class="kc-logo">ARUMI<i></i></span><span>For You</span><span>Bestsellers</span><span>New &amp; Featured</span><span>Skincare</span><span>Skin Concerns</span><span>Brands</span><span>Sets &amp; Collections</span><span>The Journal</span><span class="kc-quiz">✦ Skin Quiz</span></div>
+          </div>
+        </div>
+        <div class="kc-grid">
+          <div class="kc-block">
+            <span class="kc-k">Buttons</span>
+            <div class="kc-row"><span class="kc-btn primary">Start the quiz →</span><span class="kc-btn outline">Add To Cart</span><span class="kc-link">or shop bestsellers</span></div>
+            <span class="kc-k">Chips</span>
+            <div class="kc-row"><span class="kc-chip">Combination</span><span class="kc-chip">Four seasons</span><span class="kc-chip on">Redness</span><span class="kc-chip">$60 – $100</span></div>
+            <span class="kc-k">Badges</span>
+            <div class="kc-row"><span class="kc-badge">Bestseller</span><span class="kc-badge new">New</span><span class="kc-badge sale">Save 10%</span><span class="kc-badge match">98% match · Best for you</span></div>
+            <span class="kc-k">Option tile</span>
+            <div class="kc-row"><span class="kc-opt"><i></i><b>Humid &amp; hot</b><small>Sticky summers, lightweight layers</small></span><span class="kc-opt on"><i></i><b>Four seasons</b><small>Humid summer, dry winter</small></span></div>
+          </div>
+          <div class="kc-block">
+            <span class="kc-k">Product card</span>
+            <div class="kc-cards">
+              <div class="kc-card"><span class="kc-tag">Bestseller</span><img src="img/arumi-prod-1.jpg" alt="Matcha PDRN Pack Cleanser" loading="lazy"><b>Matcha PDRN Pack Cleanser</b><span class="kc-stars">★★★★★ <em>4.8 (1,042)</em></span><span class="kc-meta">Pore Care, Soothes</span><span class="kc-price"><strong>$25.99 CAD</strong><u>120ml</u></span><span class="kc-btn outline wide">Add To Cart</span></div>
+              <div class="kc-card"><span class="kc-tag">Bestseller</span><img src="img/arumi-prod-2.jpg" alt="Heartleaf 77% Soothing Toner" loading="lazy"><b>Heartleaf 77% Soothing Toner</b><span class="kc-stars">★★★★★ <em>4.6 (2,310)</em></span><span class="kc-meta">Calms Redness, Hydrates</span><span class="kc-price"><strong>$29.99 CAD</strong><u>250ml</u></span><span class="kc-btn outline wide">Add To Cart</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="appflow" id="appflow" aria-labelledby="app">
+    <div class="app-pin">
+      <div class="app-copy wrap">
+        <span class="label">13 · Mobile app · Returns</span>
+        <h2 id="app">A return in <em>four steps</em></h2>
+        <p>The brief asked for order history and return requests on mobile. The app takes Mina from her account to a started return with a QR code, with the refund shown before she confirms.</p>
+        <div class="app-step"><span class="label" id="appidx">01 / 08</span><p id="apptext"></p></div>
+      </div>
+      <div class="app-track-wrap"><div class="app-track" id="apptrack">
+        <figure class="phone"><img src="img/arumi-app-home.jpg" alt="App home: Your routine, matched in 2 minutes" loading="lazy"><figcaption class="label">Home</figcaption></figure>
+        <figure class="phone"><img src="img/arumi-app-account.jpg" alt="Account with skin profile and Orders & returns" loading="lazy"><figcaption class="label">Account</figcaption></figure>
+        <figure class="phone"><img src="img/arumi-app-orders.jpg" alt="Orders & returns list with return window" loading="lazy"><figcaption class="label">Orders</figcaption></figure>
+        <figure class="phone"><img src="img/arumi-app-select.jpg" alt="Step 1 of 4: Which items are you returning?" loading="lazy"><figcaption class="label">Step 1 · Items</figcaption></figure>
+        <figure class="phone"><img src="img/arumi-app-reason.jpg" alt="Step 2 of 4: Why are you returning?" loading="lazy"><figcaption class="label">Step 2 · Reason</figcaption></figure>
+        <figure class="phone"><img src="img/arumi-app-method.jpg" alt="Step 3 of 4: How would you like to return?" loading="lazy"><figcaption class="label">Step 3 · Method</figcaption></figure>
+        <figure class="phone"><img src="img/arumi-app-review.jpg" alt="Step 4 of 4: Review your return" loading="lazy"><figcaption class="label">Step 4 · Review</figcaption></figure>
+        <figure class="phone"><img src="img/arumi-app-confirmed.jpg" alt="Return started with QR code" loading="lazy"><figcaption class="label">Return started</figcaption></figure>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="va">
+    <div class="sec-head" style="margin-bottom:56px"><span class="label">14 · Validate</span><h2 id="va">Validate</h2></div>
+    <div class="results">
+      <div class="big-num">
+        <b>6–7<small> / 7</small></b>
+        <span class="label">Participants completing each task after the changes</span>
+        <p style="margin:16px 0 0;color:#c3c7d2;max-width:44ch">To validate the refined design, I repeated the usability test using the same tasks and questions as the first round. Task completion improved across all five tasks, increasing from 2–3 participants before the changes to 6–7 participants afterward, out of seven.</p>
+      </div>
+      <div>
+        <div class="chart" id="chart">
+          <div class="gl" style="bottom:100%"><span>7</span></div>
+          <div class="gl" style="bottom:50%"><span>3.5</span></div>
+          <div class="col"><div class="bar r1"><b>2–3</b></div></div>
+          <div class="col"><div class="bar r2"><b>6–7</b></div></div>
+        </div>
+        <div class="chart-x"><span class="label">Round 1</span><span class="label">After redesign</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="co" style="padding-top:0">
+    <div class="grid">
+      <div class="sec-head"><span class="label">15 · Conclusion</span><h2 id="co">Conclusion</h2></div>
+      <div class="prose">
+        <p class="lead-plain">Overall, Arumi’s redesign created a more guided and personalized skincare shopping experience, helping users find suitable products, understand routine steps, and make informed choices.</p>
+        <p>In the second usability test, 6–7 out of 7 participants completed each task, compared with 2–3 out of 7 in the first round. This project taught me how to turn research insights into focused design decisions and use repeated testing to see whether those changes actually help users.</p>
+        <p>Given the limited project timeline, I prioritized the core product-discovery and selection journey. With more time, I would test the product-comparison and checkout flows with a broader group of participants and use their feedback to further refine the experience.</p>
+      </div>
+    </div>
+    <div class="grid" style="margin-top:96px;margin-bottom:32px">
+      <div class="sec-head"><span class="label">16 · After thoughts</span><h2>After <em>thoughts</em></h2></div>
+      <div class="prose"><p class="lead-plain">Two things I'd improve with more time.</p></div>
+    </div>
+    <div class="next-steps">
+      <div class="ns reveal"><span class="label">First</span><h3>Validate the quiz logic</h3><p>The quiz recommendation logic is simplified — answers map to routines through basic rules, so a real product would need a dermatologist to validate the recommendations before launch.</p></div>
+      <div class="ns reveal"><span class="label">Second</span><h3>Test with screen-reader users</h3><p>Accessibility has only been checked against guidelines: I verified color contrast and tap target sizes, but the design hasn't been tested with screen-reader users yet, which would be my next step.</p></div>
+    </div>
+  </section>
+
+  <footer class="end wrap">
+    <div class="end-row">
+      <a class="end-card" href="index.html#work" data-hover><span class="label">← Back</span><h3>All <em>work</em></h3></a>
+      <a class="end-card" href="cupcakes.html" data-hover><span class="label">Next case study →</span><h3>Toronto <em>Cupcakes</em></h3></a>
+    </div>
+    <div class="foot label"><span>© 2026 Behina Amini</span><a href="https://www.linkedin.com/in/behina-amini-341636264" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+
+  /* lead paragraph lights word by word */
+  const lead = $('#lead'), words = [];
+  { const raw = lead.textContent.trim(); lead.textContent = '';
+    raw.split(/\s+/).forEach((w) => { const s = document.createElement('span'); s.className = 'wd'; s.textContent = w; lead.append(s, ' '); words.push(s); }); }
+
+  const progress = $('#progress'), orb = $('#orb');
+  const reveals = $$('.reveal'), pars = $$('.parallax');
+  const phases = $$('.phase'), dds = $$('.dd-sticky [data-i]');
+  const chartBars = $$('#chart .bar'), chart = $('#chart');
+
+  const frame = () => {
+    const y = scrollY, vh = innerHeight;
+    progress.style.transform = `scaleX(${clamp(y / (document.documentElement.scrollHeight - vh))})`;
+    if (!reduce) orb.style.transform = `translate3d(0, ${y * .25}px, 0) scale(${1 + y / 4000})`;
+
+    const lr = lead.getBoundingClientRect();
+    if (lr.top < vh && lr.bottom > 0) {
+      const lit = clamp((vh * .85 - lr.top) / (lr.height + vh * .3)) * words.length;
+      words.forEach((w, i) => (w.style.opacity = (0.25 + clamp(lit - i) * .75).toFixed(3)));
+    }
+
+    reveals.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const p = reduce ? 1 : clamp((vh - r.top) / (vh * .45));
+      el.style.setProperty('--ry', ((1 - p) * 50).toFixed(1) + 'px');
+      el.style.setProperty('--ro', (0.35 + p * .65).toFixed(3));
+    });
+
+    if (!reduce) pars.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const off = (r.top + r.height / 2 - vh / 2);
+      el.style.transform = `translate3d(0, ${off * +el.dataset.speed}px, 0)`;
+    });
+
+    /* active Double Diamond phase = the one nearest the viewport middle */
+    let active = 0, best = Infinity;
+    phases.forEach((ph, i) => { const r = ph.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - vh / 2); if (d < best) { best = d; active = i; } });
+    phases.forEach((ph, i) => ph.classList.toggle('on', i === active));
+    dds.forEach((el) => el.classList.toggle('on', +el.dataset.i === active));
+
+    const cr = chart.getBoundingClientRect();
+    const g = reduce ? 1 : 0.55 + clamp((vh - cr.top) / (vh * .6)) * .45;
+    chartBars.forEach((b) => b.style.setProperty('--g', g.toFixed(3)));
+    requestAnimationFrame(frame);
+
+
+
+  /* affinity notes: scattered → stuck to their cluster as you scroll */
+  const amboard = $('#amboard'), amNotes = $$('#amboard .note');
+  amNotes.forEach((n) => { n._x = (Math.random() - .5) * 120; n._y = (Math.random() - .5) * 80 + 30; n._r = (Math.random() - .5) * 24; n._fr = (Math.random() - .5) * 2.4; });
+  const amLoop = () => {
+    const r = amboard.getBoundingClientRect();
+    if (r.top < innerHeight && r.bottom > 0) {
+      const p = reduce ? 1 : clamp((innerHeight * .95 - r.top) / (innerHeight * .7));
+      const e = 1 - (1 - p) ** 3;
+      amNotes.forEach((n) => {
+        n.style.setProperty('--nx', (n._x * (1 - e)).toFixed(1) + 'px');
+        n.style.setProperty('--ny', (n._y * (1 - e)).toFixed(1) + 'px');
+        n.style.setProperty('--nr', (n._r * (1 - e) + n._fr).toFixed(2) + 'deg');
+      });
+    }
+    };
+  requestAnimationFrame(amLoop);
+
+  /* iteration boards: earlier boards shrink as the next one stacks on top */
+  const boardEls = $$('#boards .board');
+  /* mobile app reel */
+  const appflow = $('#appflow'), apptrack = $('#apptrack'), appidx = $('#appidx'), apptext = $('#apptext');
+  const phones = [...apptrack.children];
+  const appCopy = [
+    'The app opens on the quiz, with Mina\'s saved regimen right below it.',
+    'Account shows the skin profile from her quiz, and flags Orders & returns while a return window is open.',
+    'Each order shows its return window, with Return items right on the delivered order.',
+    'Step 1 of 4: pick items and quantities. "Opened is fine" explains the 30-day policy up front.',
+    'Step 2: one reason, which also updates her skin profile so the next picks are better.',
+    'Step 3: free Canada Post drop-off with a QR code, home pickup or a partner store, refunded to card or ARUMI credit.',
+    'Step 4: one review screen with the items, the method and the exact refund, $56.49 to her card.',
+    'Return started: a QR code to show at the counter and three clear next steps.'
+  ];
+  const sizeApp = () => {
+    if (reduce) return;
+    const extra = Math.max(0, apptrack.scrollWidth - apptrack.parentElement.clientWidth);
+    appflow.style.height = (extra + innerHeight) + 'px'; appflow._extra = extra;
+  };
+  let lastApp = -1;
+  const scenes = () => {
+    const vh = innerHeight;
+    if (!reduce) boardEls.forEach((el, i) => {
+      const next = boardEls[i + 1];
+      let k = 0;
+      if (next) { const nr = next.getBoundingClientRect(); k = clamp(1 - (nr.top - 80) / (vh * .8)); }
+      el.style.transform = `scale(${(1 - k * .06).toFixed(4)})`;
+      el.style.filter = k > .01 ? `brightness(${(1 - k * .35).toFixed(3)})` : 'none';
+    });
+    const r = appflow.getBoundingClientRect(), tot = r.height - vh;
+    const ap = tot > 0 ? clamp(-r.top / tot) : 0;
+    if (!reduce) apptrack.style.transform = `translate3d(${-ap * (appflow._extra || 0)}px,0,0)`;
+    const idx = Math.min(phones.length - 1, Math.round(ap * (phones.length - 1)));
+    if (idx !== lastApp) {
+      lastApp = idx;
+      appidx.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(phones.length).padStart(2, '0');
+      apptext.textContent = appCopy[idx];
+      phones.forEach((ph, i) => { ph.style.opacity = i === idx ? 1 : .45; ph.style.transform = i === idx ? 'translateY(-8px)' : 'none'; });
+    }
+    requestAnimationFrame(scenes);
+  };
+  addEventListener('resize', sizeApp);
+  sizeApp();
+  addEventListener('load', sizeApp);
+  requestAnimationFrame(scenes);
+
+  /* live homepage: slow auto-scroll with pauses, like a screen recording */
+  const view = $('#liveview'), limg = $('#liveimg'), pbtn = $('#playbtn');
+  let playing = !reduce, pos = 0, hold = 90, dir = 1, lastT = 0;
+  const setBtn = () => { pbtn.textContent = playing ? 'Pause' : 'Play'; pbtn.setAttribute('aria-pressed', String(playing)); };
+  setBtn();
+  pbtn.addEventListener('click', () => { playing = !playing; setBtn(); });
+  const stops = [0, .18, .36, .54, .72, .88, 1];
+  const live = (t) => {
+    const dt = Math.min(50, t - (lastT || t)); lastT = t;
+    const max = Math.max(0, limg.offsetHeight - view.clientHeight);
+    const vr = view.getBoundingClientRect();
+    if (playing && vr.bottom > 0 && vr.top < innerHeight && max > 0) {
+      if (hold > 0) hold -= dt;
+      else {
+        const prev = pos;
+        pos = clamp(pos + dir * dt * (dir > 0 ? .00009 : .0005));
+        const hit = stops.find((st) => (prev < st && pos >= st) || (prev > st && pos <= st));
+        if (pos >= 1) { dir = -1; hold = 1600; }
+        else if (pos <= 0) { dir = 1; hold = 1400; }
+        else if (dir > 0 && hit !== undefined) hold = 900;
+      }
+    }
+    limg.style.transform = `translate3d(0, ${-pos * max}px, 0)`;
+    requestAnimationFrame(live);
+  };
+  requestAnimationFrame(live);
+  };
+  requestAnimationFrame(frame);
+
+  const cursor = $('#cursor');
+  let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
+  addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; });
+  $$('a, button, [data-hover]').forEach((el) => {
+    el.addEventListener('pointerenter', () => cursor.classList.add('big'));
+    el.addEventListener('pointerleave', () => cursor.classList.remove('big'));
+  });
+  (function move() { cx = lerp(cx, tx, .18); cy = lerp(cy, ty, .18); cursor.style.transform = `translate3d(${cx}px,${cy}px,0)`; requestAnimationFrame(move); })();
+})();
+</script>
+</body>
+</html>

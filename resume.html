@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Behina Amini Résumé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: one readable résumé column on the portfolio's dark field; photo + name header, then sections with a left label rail */
+:root {
+  --bg: #08090c; --surface: #101218; --fg: #e8eaf0; --muted: #8a90a0; --line: rgba(200,208,230,.12); --accent: #b9c3ff;
+  --display: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --gut: clamp(16px, 4vw, 56px);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-weight: 300; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+.wrap { padding-left: max(var(--gut), env(safe-area-inset-left, 0px)); padding-right: max(var(--gut), env(safe-area-inset-right, 0px)); max-width: 1180px; margin: 0 auto; }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 24px; }
+.top a { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; }
+header { display: grid; grid-template-columns: auto 1fr; gap: clamp(20px, 4vw, 48px); align-items: end; padding-block: clamp(32px, 6vh, 72px) 40px; border-bottom: 1px solid var(--line); }
+header img { width: clamp(110px, 16vw, 180px); aspect-ratio: 4 / 5; object-fit: cover; border-radius: 6px; }
+h1 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(52px, 8vw, 112px); line-height: .9; letter-spacing: -0.03em; }
+.role { margin: 12px 0 0; color: var(--muted); }
+.contact { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.contact a { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--line); border-radius: 99px; padding: 9px 16px; }
+.contact a:hover { border-color: var(--fg); }
+section { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: clamp(16px, 4vw, 56px); padding-block: 40px; border-bottom: 1px solid var(--line); }
+section > .label { padding-top: 6px; }
+.summary { margin: 0; font-family: var(--display); font-size: clamp(22px, 2.2vw, 30px); line-height: 1.35; max-width: 46ch; }
+.rs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
+.rs-sk h4 { margin: 0 0 6px; font-weight: 500; font-size: 16px; }
+.rs-sk p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.job + .job { margin-top: 40px; }
+.job-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; align-items: baseline; }
+.job-head h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(28px, 2.6vw, 38px); line-height: 1; }
+.job-head h3 em { color: var(--muted); }
+.job ul { margin: 16px 0 0; padding-left: 20px; display: grid; gap: 10px; color: #c7cbd6; max-width: 72ch; }
+.list { display: grid; gap: 14px; }
+.list div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; align-items: baseline; }
+.list b { font-weight: 400; font-size: 18px; }
+footer { padding-block: 32px calc(32px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+@media (max-width: 760px) {
+  header { grid-template-columns: 1fr; }
+  section { grid-template-columns: 1fr; }
+  .rs-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top" aria-label="Résumé"><a href="index.html#about">← Portfolio</a><span class="label">Résumé</span></nav>
+  <header>
+    <img src="img/behina.jpg" alt="Portrait of Behina Amini">
+    <div>
+      <h1>Behina Amini</h1>
+      <p class="role">UX Designer · Toronto</p>
+      <div class="contact"><a href="https://www.linkedin.com/in/behina-amini-341636264" target="_blank" rel="noopener">LinkedIn ↗</a><a href="index.html#work">Case studies</a></div>
+    </div>
+  </header>
+  <main>
+    <section><span class="label">Summary</span><p class="summary">UX Designer with 4+ years of experience designing responsive web and mobile experiences through user research, wireframing, prototyping, usability testing, and visual design. Skilled in Figma, design systems, information architecture, accessibility, and Agile collaboration, with experience translating user needs and product requirements into intuitive, development-ready interfaces.</p></section>
+    <section><span class="label">Skillset</span><div class="rs-grid"><div class="rs-sk"><h4>UX Research &amp; User-Centered Design</h4><p>User Research, User Interviews, Surveys, User Personas, Customer Journey Mapping, User Flows, Information Architecture, Design Thinking, User-Centered Design, Competitive Analysis, Research Synthesis</p></div><div class="rs-sk"><h4>UI Design, Wireframing &amp; Prototyping</h4><p>Visual Design, Interaction Design, Responsive Design, Mobile-First Design, Figma, FigJam, Adobe XD, Sketch, Wireframes, Low-Fidelity &amp; High-Fidelity Prototypes, Interactive Prototypes, Design Handoff</p></div><div class="rs-sk"><h4>Design Systems &amp; Visual Components</h4><p>Component Libraries, UI Components, Design Tokens, Pattern Libraries, Style Guides, Reusable Components, Design Documentation, Visual Hierarchy, Typography, Color Theory, Brand Guidelines</p></div><div class="rs-sk"><h4>Usability Testing &amp; Accessibility</h4><p>A/B Testing, Heuristic Evaluation, User Feedback Analysis, Accessibility Testing, WCAG 2.1/2.2, AODA Compliance, Inclusive Design, Accessibility Reviews, User Behavior Analysis</p></div><div class="rs-sk"><h4>Product Design &amp; Agile Collaboration</h4><p>End-to-End Product Design, Product Discovery, Feature Design, Requirements Analysis, User Stories, Acceptance Criteria, Agile/Scrum, Jira, Confluence, Sprint Planning, Design Reviews, Product Iteration</p></div><div class="rs-sk"><h4>Web Design, Analytics &amp; AI-Assisted Design</h4><p>HTML5, CSS3, JavaScript Fundamentals, Responsive Web Design, React UI Concepts, Browser Compatibility, Google Analytics, Hotjar, Microsoft Clarity, Heatmaps, Conversion Analysis, AI-Assisted Design Tools, Generative AI for UX Workflows</p></div></div></section>
+    <section><span class="label">Experience</span><div>
+      <div class="job"><div class="job-head"><h3>Ascensus <em>/ UX Designer</em></h3><span class="label">Jan 2025 – Present</span></div><ul><li>Designed user flows, wireframes, and high-fidelity prototypes for 4+ product features, incorporating requirements and feedback throughout the design process.</li><li>Analyzed user feedback and basic product analytics from 3+ sources to identify usability issues and support design decisions.</li><li>Developed responsive interfaces for 30+ screens, applying mobile-first principles, visual hierarchy, and consistent interaction patterns.</li><li>Updated Figma component libraries and design documentation across 20+ reusable components, helping maintain consistency across product experiences.</li><li>Tested proposed designs with 10+ users and stakeholders through usability reviews and prototype feedback, incorporating findings into subsequent iterations.</li><li>Collaborated with product managers and developers across 6+ sprint cycles, supporting design reviews, handoff, implementation questions, and post-development refinements.</li></ul></div>
+      <div class="job"><div class="job-head"><h3>Luma <em>/ UX Designer</em></h3><span class="label">July 2022 – Nov 2024</span></div><ul><li>Created wireframes, user flows, and interactive prototypes for 6+ product features, translating requirements into clear and responsive user experiences.</li><li>Conducted user interviews, usability sessions, and competitive research with 15+ users, organizing findings into personas and actionable design insights.</li><li>Designed 30+ web and mobile screens using Figma, refining layouts, interactions, and visual hierarchy based on feedback from users and stakeholders.</li><li>Organized information architecture and navigation flows for 5+ workflows, helping simplify task completion and improve overall usability.</li><li>Built reusable UI components and documented common design patterns across 25+ screens, supporting consistency and smoother developer handoff.</li><li>Reviewed designs against WCAG 2.1 guidelines and participated in design QA across 20+ screens, helping identify accessibility and implementation issues.</li></ul></div>
+    </div></section>
+    <section><span class="label">Certification</span><div class="list"><div><b>UX Design Certificate, BrainStation</b></div><div><b>Google UX Design, Coursera</b></div></div></section>
+    <section><span class="label">Education</span><div class="list"><div><b>Bachelor’s Degree in Civil Engineering</b><span class="label">2015 – 2019</span></div></div></section>
+  </main>
+  <footer class="label"><span>© 2026 Behina Amini</span><a href="index.html">Back to portfolio</a></footer>
+</div>
+</body>
+</html>
